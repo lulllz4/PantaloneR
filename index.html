@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Вексель Феофан Сергеевич</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Marck+Script&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+  /* верхний свет */
+  --room:#59626a;
+  --tile:rgba(255,255,255,.06);
+  --steel-1:#b3babf;
+  --steel-2:#7e878d;
+  --steel-3:#9aa2a7;
+  --rim-hi:rgba(255,255,255,.55);
+  --rim-lo:rgba(0,0,0,.32);
+  --hole:#262b2f;
+  --glare:rgba(240,248,255,.42);
+  --vignette:rgba(16,20,25,.5);
+  --tint:rgba(110,150,185,.05);
+  --paper:#f1f3f0;
+  --atlas:#e6dcc4;
+  --bone:#efe6cf;
+  --tag:#cdbb93;
+  --cloth:#3e4d45;
+  --cloth-dark:#222a25;
+  --gilt:#bba66c;
+  --leather:#5c1e1e;
+  --news:#e3dbc7;
+  --aged:#dacdab;
+  --lining:#ece7dc;
+  --shadow:rgba(10,14,18,.36);
+  --shadow-deep:rgba(10,14,18,.5);
+  --prop-b:1;
+  --plaque-ink:rgba(0,0,0,.55);
+  --ui-fg:#e8edf0;
+  --ui-bg:rgba(16,20,24,.66);
+  /* чернила одинаковы при любом свете */
+  --ink:#16181b;
+  --ink-2:#4a4f55;
+  --rule:rgba(22,24,27,.28);
+  --pencil:#5f6368;
+  --pen:#1e2a58;
+  --stamp:#34399a;
+  --tendon:#8c3829;
+  --sepia:#3a2c20;
+  --news-ink:rgba(32,28,22,.62);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --room:#040506;
+    --tile:rgba(255,255,255,.018);
+    --steel-1:#30373c;
+    --steel-2:#13171a;
+    --steel-3:#22282d;
+    --rim-hi:rgba(190,215,235,.2);
+    --rim-lo:rgba(0,0,0,.75);
+    --hole:#020303;
+    --glare:rgba(160,195,225,.15);
+    --vignette:rgba(0,0,0,.82);
+    --tint:rgba(60,110,150,.07);
+    --paper:#dce1e0;
+    --atlas:#cdc2a8;
+    --bone:#ddd3ba;
+    --tag:#ab9e7e;
+    --cloth:#2f3b35;
+    --cloth-dark:#121714;
+    --gilt:#a08f5f;
+    --leather:#4b1818;
+    --news:#cbc3af;
+    --aged:#c2b693;
+    --lining:#d8d3c8;
+    --shadow:rgba(0,0,0,.7);
+    --shadow-deep:rgba(0,0,0,.85);
+    --prop-b:.84;
+    --plaque-ink:rgba(200,215,228,.42);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --room:#040506;
+  --tile:rgba(255,255,255,.018);
+  --steel-1:#30373c;
+  --steel-2:#13171a;
+  --steel-3:#22282d;
+  --rim-hi:rgba(190,215,235,.2);
+  --rim-lo:rgba(0,0,0,.75);
+  --hole:#020303;
+  --glare:rgba(160,195,225,.15);
+  --vignette:rgba(0,0,0,.82);
+  --tint:rgba(60,110,150,.07);
+  --paper:#dce1e0;
+  --atlas:#cdc2a8;
+  --bone:#ddd3ba;
+  --tag:#ab9e7e;
+  --cloth:#2f3b35;
+  --cloth-dark:#121714;
+  --gilt:#a08f5f;
+  --leather:#4b1818;
+  --news:#cbc3af;
+  --aged:#c2b693;
+  --lining:#d8d3c8;
+  --shadow:rgba(0,0,0,.7);
+  --shadow-deep:rgba(0,0,0,.85);
+  --prop-b:.84;
+  --plaque-ink:rgba(200,215,228,.42);
+}
+
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--room)}
+body{
+  height:100%;margin:0;overflow:hidden;
+  color:var(--ink);
+  font-family:"PT Serif","Times New Roman",Times,serif;
+  -webkit-font-smoothing:antialiased;
+  background-color:var(--room);
+  background-image:linear-gradient(var(--tile) 1px,transparent 1px),linear-gradient(90deg,var(--tile) 1px,transparent 1px);
+  background-size:72px 72px;
+}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid #7fb2d9;outline-offset:3px}
+
+/* ================= лампа и выключатель ================= */
+.lamp{
+  position:fixed;inset:0;z-index:40;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 80% at 50% 38%,transparent 0 44%,var(--vignette) 100%),
+    radial-gradient(ellipse 40% 18% at 50% -4%,var(--glare),transparent 70%),
+    linear-gradient(var(--tint),var(--tint));
+}
+.flicker{position:absolute;inset:0;background:#000;opacity:0;animation:lampOn 1.7s linear forwards}
+@keyframes lampOn{0%,38%{opacity:1}42%{opacity:.25}48%{opacity:.85}54%{opacity:.12}60%{opacity:.6}68%,100%{opacity:0}}
+
+.switch{
+  position:fixed;z-index:60;top:calc(14px + env(safe-area-inset-top,0px));right:14px;
+  display:flex;align-items:center;gap:10px;padding:8px 12px 8px 10px;border-radius:6px;cursor:pointer;
+  font-size:14px;line-height:1;color:var(--ui-fg);background:var(--ui-bg);
+  border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+}
+.rocker{position:relative;width:16px;height:26px;border-radius:3px;background:#15181b;border:1px solid rgba(255,255,255,.22)}
+.rocker::after{content:"";position:absolute;left:2px;right:2px;height:10px;bottom:2px;border-radius:2px;background:#8b959c;transition:bottom .15s}
+.switch[data-state="light"] .rocker::after{bottom:12px;background:#dfe7ec}
+
+/* ================= стол ================= */
+.room{height:100%;display:grid;place-items:center;padding:12px}
+.stage{
+  position:relative;container-type:inline-size;
+  width:min(calc(100vw - 24px),calc((100vh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)) * 1.6));
+  width:min(calc(100vw - 24px),calc((100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)) * 1.6));
+  aspect-ratio:16/10;
+  border-radius:1.6cqw;
+  background-color:var(--steel-2);
+  background-image:
+    radial-gradient(90% 40% at 50% 0%,var(--glare),transparent 62%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='b'><feTurbulence type='fractalNoise' baseFrequency='0.85 0.011' numOctaves='2' seed='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23b)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='0.7 0.008' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.2 0'/></filter><rect width='100%' height='100%' filter='url(%23c)'/></svg>"),
+    linear-gradient(97deg,var(--steel-2) 0%,var(--steel-1) 36%,var(--steel-3) 64%,var(--steel-2) 100%);
+  background-size:auto,320px 100%,320px 100%,auto;
+  background-repeat:no-repeat,repeat-x,repeat-x,no-repeat;
+  box-shadow:
+    inset 0 1px 0 var(--rim-hi),
+    inset 0 0 0 .9cqw var(--steel-3),
+    inset 0 0 0 1.05cqw var(--rim-lo),
+    inset 0 2cqw 2.4cqw -1cqw var(--shadow),
+    0 0 0 1px rgba(0,0,0,.45),
+    0 4cqw 7cqw -2cqw #000;
+}
+.stage::before,.stage::after{
+  content:"";position:absolute;top:5%;bottom:5%;width:1cqw;pointer-events:none;
+  background:radial-gradient(circle,var(--hole) 0 .26cqw,var(--rim-hi) .3cqw .36cqw,transparent .42cqw) center top/1cqw 3cqw repeat-y;
+}
+.stage::before{left:1.9cqw}
+.stage::after{right:1.9cqw}
+
+.plaque{
+  position:absolute;left:50%;bottom:2.4%;transform:translateX(-50%);
+  padding:.5cqw 1.2cqw;border-radius:3px;white-space:nowrap;
+  font-size:max(10px,.95cqw);line-height:1;letter-spacing:.06em;
+  color:var(--plaque-ink);text-shadow:0 -1px 0 rgba(0,0,0,.5);
+  background:linear-gradient(var(--steel-1),var(--steel-2));
+  border:1px solid rgba(0,0,0,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
+}
+.prompt{
+  position:absolute;left:50%;bottom:7.5%;transform:translateX(-50%);margin:0;
+  font-style:italic;font-size:max(13px,1.15cqw);white-space:nowrap;color:var(--ui-fg);
+  text-shadow:0 1px 6px #000;opacity:.85;transition:opacity .6s;
+}
+.prompt.gone{opacity:0}
+
+/* ================= предметы на столе ================= */
+.obj{
+  position:absolute;left:var(--x);top:var(--y);width:var(--w);
+  padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transform:rotate(var(--r));
+  filter:drop-shadow(0 1cqw 1.1cqw var(--shadow)) brightness(var(--prop-b));
+  transition:transform .25s ease,filter .25s ease;
+}
+.obj:hover,.obj:focus-visible{
+  transform:rotate(var(--r)) translateY(-.5cqw) scale(1.02);
+  filter:drop-shadow(0 2cqw 2cqw var(--shadow-deep)) brightness(calc(var(--prop-b) + .08));
+}
+.deco{position:absolute;pointer-events:none;filter:drop-shadow(0 .8cqw .9cqw var(--shadow)) brightness(var(--prop-b))}
+
+.o-atlas{--x:6%;--y:11%;--w:28cqw;--r:-5deg}
+.o-clips{--x:64%;--y:8%;--w:25cqw;--r:4deg}
+.o-id{--x:41%;--y:56%;--w:12.5cqw;--r:-10deg}
+.o-tag{--x:76%;--y:60%;--w:8cqw;--r:16deg}
+.scalpel{left:39%;top:21%;width:17cqw;transform:rotate(64deg)}
+.ruler{left:48%;top:33%;width:13cqw;transform:rotate(-12deg)}
+
+/* закрытый атлас */
+.bk{position:relative;display:block;width:100%;aspect-ratio:.72}
+.bk-sheet{position:absolute;right:-5%;top:17%;width:30%;height:44%;background:var(--paper);transform:rotate(3deg);box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.bk-photo{position:absolute;right:-13%;top:47%;width:24%;aspect-ratio:.75;padding:2.4%;background:#f2f1ec;transform:rotate(-7deg);box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.bk-photo i{display:block;width:100%;height:100%;background:radial-gradient(120% 90% at 40% 30%,#5b646a,#22282c 75%)}
+.bk-ribbon{position:absolute;left:64%;bottom:-9%;width:3.4%;height:14%;background:linear-gradient(90deg,#561616,#7a2424 50%,#561616);clip-path:polygon(0 0,100% 0,100% 100%,50% 86%,0 100%)}
+.bk-body{
+  position:absolute;inset:0;border-radius:1.5% 3% 3% 1.5%/1% 2% 2% 1%;
+  box-shadow:.22cqw .22cqw 0 #d2c9b0,.44cqw .44cqw 0 #b9b097,.66cqw .66cqw 0 #d2c9b0,.88cqw .88cqw 0 #b9b097,1.1cqw 1.1cqw 0 var(--cloth-dark);
+}
+
+/* обложка атласа (общая для стола и для просмотра) */
+.cover-art{position:absolute;inset:0;container-type:inline-size;overflow:hidden;border-radius:inherit}
+.cover-skin{
+  position:absolute;inset:0;
+  background-color:var(--cloth);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='k'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.22 0'/></filter><rect width='100%' height='100%' filter='url(%23k)'/></svg>"),
+    repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),
+    repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0 1px,transparent 1px 3px);
+  box-shadow:inset 0 0 0 .8cqi rgba(0,0,0,.25),inset 0 0 14cqi rgba(0,0,0,.42);
+}
+.cover-skin::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8cqi;background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(255,255,255,.07) 55%,rgba(0,0,0,.35))}
+.cover-skin::after{content:"";position:absolute;left:10cqi;top:0;bottom:0;width:1cqi;background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(255,255,255,.06))}
+.cover-frame{
+  position:absolute;inset:10cqi 9cqi 10cqi 19cqi;
+  border:.7cqi solid rgba(0,0,0,.3);box-shadow:0 .4cqi 0 rgba(255,255,255,.07),inset 0 .4cqi 0 rgba(255,255,255,.05);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+}
+.cover-title{font:700 7.2cqi/1.35 "PT Serif","Times New Roman",serif;letter-spacing:.14em;color:var(--gilt);text-shadow:0 -.25cqi 0 rgba(0,0,0,.55),0 .2cqi 0 rgba(255,255,255,.08)}
+.cover-rule{width:26cqi;height:.6cqi;margin:6cqi 0;background:var(--gilt);opacity:.55}
+.cover-sub{font:italic 500 6cqi/1.2 "Cormorant Garamond","Times New Roman",serif;color:var(--gilt);opacity:.85}
+.cover-vol{margin-top:14cqi;font:700 4cqi/1 "PT Serif",serif;letter-spacing:.3em;color:var(--gilt);opacity:.7}
+.back-skin .cover-frame{display:none}
+
+/* стопка вырезок */
+.clips{position:relative;display:block;width:100%;aspect-ratio:.8}
+.cl{position:absolute;display:block;box-shadow:0 .15cqw .35cqw rgba(0,0,0,.35)}
+.cl.c3{inset:3% 1% 1% 7%;transform:rotate(-7deg);background-color:var(--aged)}
+.cl.c2{inset:0 7% 6% 0;transform:rotate(6deg);background-color:var(--news)}
+.cl.c1{inset:9% 8% 9% 9%;transform:rotate(-2deg);background-color:var(--news);
+  clip-path:polygon(1% 2%,30% 0,62% 1.5%,99% 0,100% 35%,98.5% 70%,100% 99%,70% 100%,35% 98.5%,0 100%,1.5% 60%,0 30%)}
+.cl.c3::before,.cl.c2::before{content:"";position:absolute;inset:12% 12%;background:repeating-linear-gradient(to bottom,var(--news-ink) 0 1px,transparent 1px 5px);opacity:.45}
+.cl .gk-head{position:absolute;left:9%;right:9%;top:7%;height:9%;
+  background:linear-gradient(var(--news-ink) 0 0) 0 0/94% 36% no-repeat,linear-gradient(var(--news-ink) 0 0) 0 100%/58% 36% no-repeat}
+.cl .gk-col{position:absolute;top:21%;bottom:7%;width:39%;background:repeating-linear-gradient(to bottom,var(--news-ink) 0 1px,transparent 1px 4px);opacity:.7}
+.cl .gk-col.a{left:9%;top:47%}
+.cl .gk-col.b{right:9%}
+.cl .gk-pic{position:absolute;left:9%;top:21%;width:39%;height:23%;background:radial-gradient(circle,rgba(30,28,22,.7) 30%,transparent 32%) 0 0/3px 3px,#9b968a}
+
+/* удостоверение на столе */
+.idc{position:relative;display:block;width:100%;aspect-ratio:.7;border-radius:5%/3.5%;box-shadow:.15cqw .2cqw 0 #2a0c0c}
+.leather-art{position:absolute;inset:0;container-type:inline-size;overflow:hidden;border-radius:inherit}
+.leather{
+  position:absolute;inset:0;background-color:var(--leather);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='3' seed='8' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23l)'/></svg>");
+  box-shadow:inset 0 0 0 2cqi rgba(0,0,0,.18),inset 0 0 22cqi rgba(0,0,0,.45);
+}
+.leather .emb{position:absolute;inset:9cqi;border:1cqi solid rgba(0,0,0,.28);border-radius:3cqi;box-shadow:0 .5cqi 0 rgba(255,255,255,.06)}
+.leather .word{position:absolute;left:0;right:0;top:46%;text-align:center;font:700 7.6cqi/1 "PT Serif",serif;letter-spacing:.1em;color:var(--gilt);opacity:.85;text-shadow:0 -.4cqi 0 rgba(0,0,0,.6)}
+
+/* бирка */
+.tag-art{position:relative;display:block;width:100%;container-type:inline-size}
+.tag-string{position:absolute;z-index:1;top:-26%;left:4%;width:92%;height:auto;overflow:visible}
+.tag-string path{fill:none;stroke:#cfc9b8;stroke-width:1.6;vector-effect:non-scaling-stroke}
+.tag-card{
+  position:relative;display:block;aspect-ratio:.5;padding:32cqi 9cqi 8cqi;text-align:left;
+  clip-path:polygon(22% 0,78% 0,100% 8%,100% 100%,0 100%,0 8%);
+  background-color:var(--tag);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='5' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.3  0 0 0 0 0.22  0 0 0 0 0.1  0 0 0 0.14 0'/></filter><rect width='100%' height='100%' filter='url(%23t)'/></svg>");
+}
+.tag-card::before{content:"";position:absolute;top:10cqi;left:50%;width:11cqi;height:11cqi;margin-left:-5.5cqi;border-radius:50%;background:var(--steel-2);box-shadow:0 0 0 2.4cqi rgba(60,45,20,.22),inset 0 1px 2px rgba(0,0,0,.6)}
+.tag-card small{display:block;padding-top:1.5cqi;border-top:1px solid rgba(40,30,15,.35);font-size:7.6cqi;line-height:1.2;color:rgba(40,30,15,.72)}
+.tag-card b{display:block;min-height:17cqi;margin-bottom:3cqi;font:400 15cqi/1.12 "Marck Script",cursive;color:var(--pen)}
+.tag-card b.big{font-size:26cqi}
+
+/* ================= подсказка у курсора ================= */
+.hoverlabel{
+  position:fixed;z-index:70;left:0;top:0;pointer-events:none;
+  padding:6px 10px;border-radius:5px;font-size:14px;line-height:1.2;white-space:nowrap;
+  color:var(--ui-fg);background:var(--ui-bg);border:1px solid rgba(255,255,255,.14);
+  opacity:0;transition:opacity .15s;
+}
+.hoverlabel.on{opacity:1}
+
+/* ================= просмотр предмета ================= */
+.viewer{
+  position:fixed;inset:0;z-index:100;display:none;
+  flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding:calc(64px + env(safe-area-inset-top,0px)) 12px calc(18px + env(safe-area-inset-bottom,0px));
+  background:rgba(3,4,5,.88);
+}
+.viewer.open{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}}
+.v-close{
+  position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:14px;z-index:2;
+  padding:9px 14px;border-radius:6px;cursor:pointer;font-size:14px;
+  color:var(--ui-fg);background:var(--ui-bg);border:1px solid rgba(255,255,255,.16);
+}
+.v-panel{display:none;flex-direction:column;align-items:center;gap:16px;max-width:100%}
+.v-panel.on{display:flex}
+.v-nav{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--ui-fg);font-size:14px;min-height:36px}
+.v-nav button{
+  min-width:44px;padding:8px 14px;border-radius:6px;cursor:pointer;
+  color:var(--ui-fg);background:var(--ui-bg);border:1px solid rgba(255,255,255,.16);
+}
+.v-nav button:disabled{opacity:.35;cursor:default}
+.v-label{min-width:12em;text-align:center;font-style:italic}
+
+/* ================= книга ================= */
+.book{position:relative;perspective:2600px;transition:transform .6s ease}
+.book.spread{width:calc(var(--pw) * 2);height:var(--ph)}
+.book.spread.at-start{transform:translateX(calc(var(--pw) * -.5))}
+.book.spread.at-end{transform:translateX(calc(var(--pw) * .5))}
+.book.single{width:var(--pw);height:var(--ph)}
+.leaf{position:absolute;top:0;left:50%;width:50%;height:100%;transform-origin:0 50%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.33,.08,.2,1);cursor:pointer}
+.leaf.flipped{transform:rotateY(-180deg)}
+.face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.bshadow{position:absolute;top:0;bottom:0;left:0;right:0;z-index:0;box-shadow:0 22px 44px -14px rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.4);transition:left .6s ease,right .6s ease}
+.at-start .bshadow{left:50%}
+.at-end .bshadow{right:50%}
+.face.back{transform:rotateY(180deg)}
+.sp{position:absolute;inset:0;transform-origin:0 50%;cursor:pointer;box-shadow:0 14px 30px -10px rgba(0,0,0,.6)}
+.sp.out{animation:turnOut .5s ease-in forwards}
+.sp.in{animation:turnIn .5s ease-out}
+@keyframes turnOut{to{transform:perspective(1800px) rotateY(-100deg);opacity:.15}}
+@keyframes turnIn{from{transform:perspective(1800px) rotateY(-100deg);opacity:.15}}
+
+/* страницы */
+.pg{
+  position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;
+  padding:calc(var(--pw) * .07) calc(var(--pw) * .08) calc(var(--pw) * .05);
+  font-size:var(--fs);line-height:1.5;color:var(--sepia);
+}
+.pg::after{content:"";position:absolute;inset:0;pointer-events:none}
+.front .pg::after,.sp .pg::after{background:linear-gradient(90deg,rgba(50,35,20,.24),transparent 7%)}
+.back .pg::after{background:linear-gradient(270deg,rgba(50,35,20,.24),transparent 7%)}
+.pg.k-cover::after,.pg.k-backcover::after{display:none}
+.pg.k-cover,.pg.k-backcover{padding:0;border-radius:0 1.5% 1.5% 0}
+.back .pg.k-backcover{border-radius:1.5% 0 0 1.5%}
+.pg.k-atlas{
+  background-color:var(--atlas);
+  background-image:
+    radial-gradient(circle at 84% 12%,rgba(120,80,30,.12) 0 5px,transparent 20px),
+    radial-gradient(circle at 14% 90%,rgba(120,80,30,.1) 0 4px,transparent 16px),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='a'><feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' seed='9' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.12  0 0 0 0.1 0'/></filter><rect width='100%' height='100%' filter='url(%23a)'/></svg>"),
+    radial-gradient(130% 100% at 50% 50%,transparent 62%,rgba(110,80,40,.2));
+}
+.pg.k-endpaper{
+  background-color:#cbbf9f;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='m'><feTurbulence type='turbulence' baseFrequency='0.012 0.03' numOctaves='4' seed='21'/><feColorMatrix values='0 0 0 0 0.25  0 0 0 0 0.2  0 0 0 0 0.12  0 0 0 0.55 -0.1'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>");
+}
+.pg.k-insert{
+  color:var(--ink);background-color:var(--paper);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' seed='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.3  0 0 0 0 0.32  0 0 0 0 0.33  0 0 0 0.07 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");
+}
+.pg.k-insert::after{background:linear-gradient(90deg,rgba(30,35,40,.14),transparent 5%)}
+.back .pg.k-insert::after{background:linear-gradient(270deg,rgba(30,35,40,.14),transparent 5%)}
+
+.pg-body{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.pg-foot{flex:none;padding-top:.6em;text-align:center;font:italic .95em/1 "Cormorant Garamond","Times New Roman",serif}
+.rh{flex:none;display:flex;justify-content:space-between;margin-bottom:.8em;padding-bottom:.35em;border-bottom:1px solid rgba(58,44,32,.55);font:italic .92em/1.2 "Cormorant Garamond","Times New Roman",serif}
+
+.pl-title{margin:0;text-align:center;font:600 1.45em/1.15 "Cormorant Garamond","Times New Roman",serif;letter-spacing:.06em}
+.pl-sub{margin:.1em 0 .3em;text-align:center;font:italic 500 1.1em/1.2 "Cormorant Garamond","Times New Roman",serif}
+.plate{flex:1;min-height:0;display:flex}
+.plate svg{display:block;width:100%;height:100%}
+.legend{flex:none;margin-top:.4em;padding-top:.45em;border-top:1px solid rgba(58,44,32,.45);columns:2;column-gap:1.2em;font-size:.74em;line-height:1.32}
+.legend div{break-inside:avoid;margin-bottom:.12em}
+.pl-cap{flex:none;margin:.4em 0 0;padding-top:.45em;border-top:1px solid rgba(58,44,32,.45);text-align:center;font:italic .95em/1.3 "Cormorant Garamond","Times New Roman",serif}
+
+.at-h{margin:0 0 .2em;text-align:center;font:600 1.3em/1.2 "Cormorant Garamond","Times New Roman",serif}
+.at-l{margin:0 0 .9em;text-align:center;font:italic 500 1.02em/1.2 "Cormorant Garamond","Times New Roman",serif}
+.at-text p{margin:0;text-indent:1.4em;text-align:justify;-webkit-hyphens:auto;hyphens:auto;font-size:.93em;line-height:1.48}
+.at-text p + p{margin-top:.3em}
+.at-text p.at-l{text-indent:0;text-align:center;margin:0 0 .9em}
+
+/* титул, оглавление, форзац */
+.tp{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.tp-a{font:700 1.5em/1.35 "PT Serif",serif;letter-spacing:.16em}
+.tp-rule{width:30%;height:1px;margin:1.3em 0;background:currentColor;opacity:.6}
+.tp-lat{font:italic 500 1.5em/1.2 "Cormorant Garamond",serif}
+.tp-vol{margin-top:2.6em;font:600 1.05em/1.3 "Cormorant Garamond",serif;letter-spacing:.08em}
+.tp-vol2{margin-top:.3em;font:italic 1em/1.35 "Cormorant Garamond",serif;max-width:80%}
+.tp-city{margin-top:auto;font:600 .95em/1 "Cormorant Garamond",serif;letter-spacing:.2em}
+.toc-h{margin:.8em 0 1.4em;text-align:center;font:700 1em/1 "PT Serif",serif;letter-spacing:.2em}
+.toc-row{
+  display:flex;align-items:baseline;gap:.4em;width:100%;margin:0 0 .75em;padding:0;border:0;background:none;
+  cursor:pointer;text-align:left;font:1em/1.35 "PT Serif",serif;color:inherit;
+}
+.toc-row .t{flex:0 1 auto}
+.toc-row .d{flex:1;min-width:1em;border-bottom:1px dotted currentColor;transform:translateY(-.3em)}
+.toc-row:hover .t{text-decoration:underline;text-underline-offset:.2em}
+.toc-row.pencil{margin-top:1.4em;font:1.3em/1.2 "Marck Script",cursive;color:var(--pencil);transform:rotate(-2deg)}
+.exlib{position:absolute;right:12%;bottom:14%;font:1.5em/1 "Marck Script",cursive;color:#4b4a46;transform:rotate(-6deg);opacity:.85}
+
+/* вкладыши: внешность, фото, характер */
+.ins-h{flex:none;margin:.3em 0 1.1em;text-align:center;font:700 .95em/1.35 "PT Serif",serif;letter-spacing:.14em;text-transform:uppercase}
+.ins-name{flex:none;margin:.3em 0 .2em;text-align:center;font:700 1.05em/1.35 "PT Serif",serif;letter-spacing:.06em}
+.ins p{margin:0;text-indent:1.6em;text-align:justify;-webkit-hyphens:auto;hyphens:auto;font-family:"PT Serif","Times New Roman",serif}
+.ins p.cont{text-indent:0}
+.ins p.split{text-align-last:justify}
+.ruled{flex:1;min-height:0;background:repeating-linear-gradient(to bottom,transparent 0 calc(1.9em - 1px),var(--rule) calc(1.9em - 1px) 1.9em)}
+.loose{flex:1;min-height:0;display:grid;place-items:center}
+.print{position:relative;width:min(72%,calc((var(--ph) * .62) * .75));padding:4%;background:#f6f6f2;transform:rotate(3deg);box-shadow:0 2px 3px rgba(0,0,0,.3),0 16px 26px -12px rgba(0,0,0,.55)}
+.print .img{aspect-ratio:3/4;overflow:hidden;display:grid;place-items:center;background:radial-gradient(120% 90% at 40% 30%,#5b646a,#22282c 75%);color:rgba(235,240,243,.5);font-style:italic;font-size:.9em}
+.print .img img,.idv .img img{display:block;width:100%;height:100%;object-fit:cover}
+.print .clipper{position:absolute;top:-9%;left:16%;width:9%;overflow:visible}
+.clipper path{fill:none;stroke:#9aa3a9;stroke-width:2.6;stroke-linecap:round}
+.clipper path + path{stroke:#e9eef1;stroke-width:.8;opacity:.8}
+
+/* иллюстрации */
+.a-flesh{fill:var(--tendon);stroke:var(--tendon);stroke-linecap:round}
+.a-out{fill:var(--sepia);stroke:var(--sepia);stroke-linecap:round}
+.a-fill{fill:var(--bone);stroke:var(--bone);stroke-linecap:round}
+.a-shade{stroke:var(--sepia);stroke-width:.8;opacity:.38;fill:none}
+.a-ten{fill:none;stroke:var(--tendon);stroke-width:3.4;stroke-linecap:round;opacity:.86}
+.a-ten-hi{fill:none;stroke:var(--atlas);stroke-width:.7;opacity:.55}
+.a-jun{fill:none;stroke:var(--tendon);stroke-width:1.5;opacity:.8}
+.a-ret{fill:var(--tendon);fill-opacity:.2;stroke:var(--sepia);stroke-width:.8}
+.a-hatch{stroke:var(--sepia);stroke-width:.6;opacity:.42}
+.a-lead{stroke:var(--sepia);stroke-width:.6;opacity:.75;fill:none}
+.a-dot{fill:var(--sepia)}
+.a-lab{fill:var(--sepia);font-family:"Cormorant Garamond","Times New Roman",serif;font-style:italic;font-size:14px}
+.a-pencil{fill:var(--pencil);font-family:"Marck Script",cursive;font-size:18px}
+.a-arrow{fill:none;stroke:var(--pencil);stroke-width:1.1;stroke-linecap:round}
+.a-bone{fill:var(--bone);stroke:var(--sepia);stroke-width:1.3}
+.a-muscle{fill:var(--tendon);fill-opacity:.5;stroke:var(--sepia);stroke-width:1}
+.a-fiber{stroke:var(--tendon);stroke-width:.8;opacity:.55}
+.a-fiber-l{stroke:var(--atlas);stroke-width:.7;opacity:.45}
+.a-hole{fill:#2b2018;stroke:var(--sepia);stroke-width:1.2}
+.a-dash{fill:none;stroke:var(--sepia);stroke-width:1;stroke-dasharray:4 3;opacity:.8}
+.a-line{fill:none;stroke:var(--sepia);stroke-width:1.4}
+.co circle{fill:var(--atlas);stroke:var(--sepia);stroke-width:.9}
+.co text{fill:var(--sepia);font-family:"PT Serif",serif;font-size:11px;text-anchor:middle}
+.a-side{fill:var(--sepia);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:13px}
+
+.measure{position:fixed;left:-10000px;top:0;visibility:hidden;pointer-events:none}
+.measure .pg{position:absolute}
+
+/* ================= вырезки ================= */
+.cards{display:grid;width:min(540px,92vw)}
+.card{
+  grid-area:1/1;position:relative;align-self:start;padding:6% 7% 7%;
+  font-size:clamp(12px,2.9vw,15px);line-height:1.45;color:#2a261f;
+  background-color:var(--news);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='13' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.3  0 0 0 0 0.26  0 0 0 0 0.18  0 0 0 0.12 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  box-shadow:0 2px 3px rgba(0,0,0,.35),0 20px 36px -14px rgba(0,0,0,.7);
+  transition:transform .45s ease,opacity .45s ease;cursor:pointer;
+}
+.card.cut{clip-path:polygon(1% 1.5%,28% 0,63% 1%,99% 0,100% 33%,98.6% 68%,100% 99%,72% 100%,36% 98.8%,0 100%,1.2% 62%,0 31%)}
+.card.aged{background-color:var(--aged)}
+.card.leaving{transform:translateX(70%) rotate(14deg)!important;opacity:0}
+.c-meta{display:flex;justify-content:space-between;gap:1em;padding-bottom:.5em;margin-bottom:.8em;border-bottom:2px solid rgba(40,34,26,.6);font-size:.8em;font-style:italic}
+.c-title{margin:0 0 .6em;font:700 1.45em/1.15 "PT Serif",serif}
+.c-text p{margin:0;text-indent:1.3em;text-align:justify;-webkit-hyphens:auto;hyphens:auto}
+.c-cols{display:grid;grid-template-columns:1fr 1fr;gap:6%}
+.g{display:block;height:.52em;margin:.48em 0;background:var(--news-ink);border-radius:1px;opacity:.75}
+.g.h{height:1em;margin:.35em 0;opacity:.9}
+.g.m{height:.45em;display:inline-block;margin:0}
+.c-pic{aspect-ratio:4/3;margin:.4em 0 .6em;background:radial-gradient(circle,rgba(30,28,22,.75) 30%,transparent 33%) 0 0/4px 4px,#9d988b}
+.c-type .g{height:.5em;margin:.62em 0;opacity:.6}
+
+/* ================= удостоверение ================= */
+.idv{
+  --iw:min(760px,94vw,calc((100dvh - 170px) * 1.4));
+  position:relative;width:var(--iw);height:calc(var(--iw) / 2 / .7);perspective:2200px;transition:transform .7s ease;
+}
+.idv.closed{transform:translateX(-25%)}
+.id-right,.id-face{position:absolute;top:0;height:100%;width:50%;container-type:inline-size}
+.id-right{left:50%;border-radius:0 2.5% 2.5% 0/0 1.8% 1.8% 0;overflow:hidden}
+.id-leaf{position:absolute;left:50%;top:0;width:50%;height:100%;transform-origin:0 50%;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.33,.08,.2,1);cursor:pointer;z-index:2}
+.idv.open .id-leaf{transform:rotateY(-180deg)}
+.id-face{left:0;width:100%;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:0 2.5% 2.5% 0/0 1.8% 1.8% 0;overflow:hidden;box-shadow:0 14px 30px -10px rgba(0,0,0,.6)}
+.id-back{transform:rotateY(180deg);border-radius:2.5% 0 0 2.5%/1.8% 0 0 1.8%}
+.lining{
+  position:absolute;inset:0;padding:8cqi 8cqi;color:#2b2522;
+  background-color:var(--lining);
+  background-image:
+    repeating-radial-gradient(circle at 25% 35%,rgba(140,60,60,.08) 0 1px,transparent 1px 7px),
+    repeating-radial-gradient(circle at 75% 65%,rgba(60,80,130,.07) 0 1px,transparent 1px 8px);
+  box-shadow:inset 0 0 0 3cqi var(--leather),inset 0 0 0 3.4cqi rgba(0,0,0,.3);
+}
+.id-right .lining{box-shadow:inset 0 0 0 3cqi var(--leather),inset 0 0 0 3.4cqi rgba(0,0,0,.3),inset 6cqi 0 6cqi -4cqi rgba(0,0,0,.2)}
+.id-org{text-align:center;font:700 4.6cqi/1.35 "PT Serif",serif;letter-spacing:.04em;text-transform:uppercase}
+.id-no .ul{min-width:12cqi}
+.id-no{margin:5cqi 0 6cqi;text-align:center;font:700 6.2cqi/1.2 "PT Serif",serif;letter-spacing:.08em}
+.id-dl{margin:0;font-size:5.4cqi;line-height:1.3}
+.id-dl dt{font-size:4.2cqi;font-style:italic;color:#6a605a;margin-top:3cqi}
+.id-dl dd{margin:0;padding-bottom:.6cqi;border-bottom:1px solid rgba(40,30,25,.35);font-weight:700}
+.id-small{margin-top:6cqi;font-size:4.4cqi;line-height:1.5}
+.ul{display:inline-block;min-width:22cqi;border-bottom:1px solid #2b2522;vertical-align:baseline;height:1em}
+.idv .img{position:relative;width:38cqi;aspect-ratio:3/4;margin:6cqi auto 0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(120% 90% at 40% 30%,#5b646a,#22282c 75%);color:rgba(235,240,243,.5);font-style:italic;font-size:4.4cqi}
+.idv .stamp{position:absolute;width:40cqi;left:40cqi;top:30cqi;color:var(--stamp);opacity:.72;transform:rotate(-14deg);mix-blend-mode:multiply;pointer-events:none}
+.id-mp{margin-top:8cqi;text-align:center;font-size:4.4cqi;color:#6a605a}
+.id-owner{position:relative;margin-top:12cqi;font-size:4.4cqi}
+.id-owner .ul{min-width:40cqi;margin-left:2cqi}
+.id-owner .scrawl{position:absolute;left:40cqi;bottom:-1cqi;font:12cqi/1 "Marck Script",cursive;color:var(--pen);transform:rotate(-7deg);white-space:nowrap}
+
+/* ================= бирка крупно ================= */
+.tag-big{width:min(240px,56vw,calc((100dvh - 200px) * .46));margin-top:12vh}
+
+/* ================= портретный экран ================= */
+@media (orientation:portrait) and (max-width:900px){
+  .stage{
+    width:min(calc(100vw - 12px),calc((100vh - 20px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)) * 10 / 18));
+    width:min(calc(100vw - 12px),calc((100dvh - 20px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)) * 10 / 18));
+    aspect-ratio:10/18;border-radius:3cqw;
+  }
+  .room{padding:6px}
+  .stage::before,.stage::after{width:2cqw;background-size:2cqw 5.5cqw;background-image:radial-gradient(circle,var(--hole) 0 .5cqw,var(--rim-hi) .58cqw .7cqw,transparent .8cqw)}
+  .stage::before{left:2.4cqw}.stage::after{right:2.4cqw}
+  .o-atlas{--x:9%;--y:5%;--w:56cqw;--r:-3deg}
+  .o-clips{--x:41%;--y:46%;--w:50cqw;--r:5deg}
+  .o-id{--x:9%;--y:60%;--w:29cqw;--r:-8deg}
+  .o-tag{--x:73%;--y:8%;--w:16cqw;--r:12deg}
+  .scalpel{left:62%;top:34%;width:34cqw;transform:rotate(84deg)}
+  .ruler{display:none}
+  .plaque{font-size:max(10px,2.6cqw);padding:1cqw 2.4cqw}
+  .prompt{bottom:5.5%;font-size:max(13px,3.4cqw)}
+}
+@media (max-width:600px){
+  .switch{font-size:13px;padding:7px 10px 7px 8px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+
+/* ================= 3D-сцена ================= */
+#scene3d{position:fixed;inset:0;z-index:1}
+#scene3d canvas{display:block;width:100%;height:100%;touch-action:none}
+body:not(.has3d) #scene3d,body:not(.has3d) .prompt3d{display:none}
+body.has3d .room{display:none}
+body.has3d .lamp{background:radial-gradient(ellipse 95% 90% at 50% 42%,transparent 0 56%,rgba(0,0,0,.45) 100%)}
+.flicker{animation:none;opacity:1}
+.flicker.on{animation:lampOn 1.7s linear forwards}
+.prompt3d{
+  position:fixed;z-index:45;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);margin:0;
+  font-style:italic;font-size:14px;white-space:nowrap;pointer-events:none;
+  color:var(--ui-fg);text-shadow:0 1px 6px #000;opacity:.9;transition:opacity .6s;
+  padding:7px 14px;border-radius:16px;background:rgba(8,10,12,.55);
+}
+.prompt3d.gone{opacity:0}
+.sr-objs button{position:fixed;left:0;top:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px}
+.inspect{position:fixed;inset:0;z-index:90;pointer-events:none}
+.inspect[hidden]{display:none}
+.inspect .v-close{pointer-events:auto}
+.i-hint{
+  position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);margin:0;
+  font-style:italic;font-size:14px;color:var(--ui-fg);text-shadow:0 1px 6px #000;white-space:nowrap;
+  padding:7px 14px;border-radius:16px;background:rgba(8,10,12,.55);
+}
+.i-hint:empty{display:none}
+
+/* ================= атлас: объём и закладки ================= */
+.cover-img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
+.pg.k-cover .cover-art::after,.pg.k-backcover .cover-art::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 40% 25%,rgba(255,255,255,.07),transparent 55%),linear-gradient(90deg,rgba(0,0,0,.28),transparent 6%,transparent 94%,rgba(0,0,0,.22));
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.4),inset 0 0 40px rgba(0,0,0,.35);
+}
+.front .pg::after,.sp .pg::after{background:linear-gradient(90deg,rgba(40,28,15,.38) 0,rgba(40,28,15,.14) 2.5%,rgba(255,250,235,.07) 6%,transparent 14%,transparent 91%,rgba(40,28,15,.08) 100%)}
+.back .pg::after{background:linear-gradient(270deg,rgba(40,28,15,.38) 0,rgba(40,28,15,.14) 2.5%,rgba(255,250,235,.07) 6%,transparent 14%,transparent 91%,rgba(40,28,15,.08) 100%)}
+.front .pg.k-insert::after,.sp .pg.k-insert::after{background:linear-gradient(90deg,rgba(25,30,35,.26) 0,rgba(25,30,35,.09) 2.5%,rgba(255,255,255,.05) 6%,transparent 13%,transparent 92%,rgba(25,30,35,.06) 100%)}
+.back .pg.k-insert::after{background:linear-gradient(270deg,rgba(25,30,35,.26) 0,rgba(25,30,35,.09) 2.5%,rgba(255,255,255,.05) 6%,transparent 13%,transparent 92%,rgba(25,30,35,.06) 100%)}
+.book.spread:not(.at-start):not(.at-end) .bshadow{opacity:0}
+.boards{
+  position:absolute;z-index:0;top:-1.5%;bottom:-1.7%;
+  left:calc(-1 * var(--sl,0px) - 8px);right:calc(-1 * var(--sr,0px) - 8px);
+  border-radius:5px;opacity:0;transition:opacity .3s;
+  background-color:var(--cloth);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='k'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.22 0'/></filter><rect width='100%' height='100%' filter='url(%23k)'/></svg>"),
+    repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px);
+  box-shadow:0 30px 50px -18px rgba(0,0,0,.95),0 3px 6px rgba(0,0,0,.5),inset 0 0 0 1px rgba(0,0,0,.45),inset 0 0 24px rgba(0,0,0,.4);
+}
+.boards::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:30px;margin-left:-15px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.5),transparent)}
+.stack{position:absolute;z-index:0;top:.4%;bottom:-.5%;opacity:0;transition:opacity .3s;background:repeating-linear-gradient(90deg,#ddd1b5 0 1px,#b2a688 1px 2px)}
+.stack.l{right:100%;width:var(--sl,0px);border-radius:3px 0 0 3px;box-shadow:inset 3px 0 5px rgba(0,0,0,.3)}
+.stack.r{left:100%;width:var(--sr,0px);border-radius:0 3px 3px 0;box-shadow:inset -3px 0 5px rgba(0,0,0,.3)}
+.boards.on,.stack.on{opacity:1}
+.tabs{position:absolute;inset:0;z-index:800;pointer-events:none}
+.tab{
+  position:absolute;left:calc(100% + var(--sr,0px) + 4px);pointer-events:auto;cursor:pointer;
+  writing-mode:vertical-rl;padding:16px 7px;border:0;border-radius:0 6px 6px 0;
+  font:13px/1 "PT Serif","Times New Roman",serif;letter-spacing:.06em;color:#f1eadb;background:var(--tc);
+  box-shadow:2px 4px 8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.14);transition:filter .2s;
+}
+.tab.left{left:auto;right:calc(100% + var(--sl,0px) + 4px);border-radius:6px 0 0 6px;box-shadow:-2px 4px 8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.14)}
+.tab:hover{filter:brightness(1.15)}
+.tab.cur{filter:brightness(1.35)}
+.glow{position:absolute;inset:-3% -4%;z-index:950;pointer-events:none;background:radial-gradient(ellipse 60% 55% at 50% 28%,rgba(255,250,235,.07),transparent 70%),radial-gradient(ellipse 80% 75% at 50% 42%,transparent 55%,rgba(0,0,0,.3))}
+.book.single .glow{inset:0}
+.tabrow{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.tabrow[hidden]{display:none}
+.tabrow button{padding:7px 14px;border-radius:16px;cursor:pointer;font-size:13px;color:var(--ui-fg);background:var(--ui-bg);border:1px solid rgba(255,255,255,.16)}
+.tabrow button.cur{color:#16181b;background:#e8edf0}
+.toc-sec{margin:1.2em 0 .6em;font:italic 600 1.05em/1.2 "Cormorant Garamond","Times New Roman",serif;letter-spacing:.04em}
+.ap-photo{flex:none;display:grid;place-items:center;padding:.6em 0 1.3em}
+.ap-photo .print{width:min(50%,calc(var(--ph) * .3))}
+.ap-ruled{flex:1;min-height:3.8em}
+.ap-text{flex:1;min-height:0;overflow:hidden}
+
+/* ================= вырезки-картинки ================= */
+.cards{width:min(540px,92vw,calc((100dvh - 200px) * .78))}
+.card.imgcard{padding:0;background:none;box-shadow:none}
+.card.imgcard canvas{display:block;width:100%;height:auto;filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)) drop-shadow(0 22px 26px rgba(0,0,0,.6))}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" result="d"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 2" result="m"/>
+    <feComposite in="d" in2="m" operator="in"/>
+  </filter>
+</svg>
+
+
+<div id="scene3d" aria-hidden="true"></div>
+<p class="prompt3d" id="prompt3d">Осмотрите предметы на столе</p>
+<div class="sr-objs" id="srObjs">
+  <button type="button" data-key="atlas">Атлас анатомии</button>
+  <button type="button" data-key="clips">Вырезки</button>
+  <button type="button" data-key="id">Служебное удостоверение</button>
+  <button type="button" data-key="tag">Бирка</button>
+</div>
+<div class="inspect" id="inspect" hidden>
+  <button class="v-close" type="button" id="iClose">Положить на место</button>
+  <p class="i-hint" id="iHint"></p>
+</div>
+
+<button class="switch" id="lightSwitch" type="button" aria-pressed="false">
+  <span class="rocker" aria-hidden="true"></span>
+  <span>Свет: <span class="sw-state">дежурный</span></span>
+</button>
+
+<div class="lamp" aria-hidden="true"><div class="flicker" id="flicker"></div></div>
+
+<main class="room">
+  <div class="stage" id="stage">
+
+    <!-- обстановка -->
+    <svg class="deco scalpel" viewBox="0 0 260 32" aria-hidden="true">
+      <defs>
+        <linearGradient id="sc-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9dfe3"/><stop offset=".45" stop-color="#8e979d"/><stop offset="1" stop-color="#4b5359"/></linearGradient>
+        <linearGradient id="sc-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f4f6"/><stop offset=".6" stop-color="#a9b2b8"/><stop offset="1" stop-color="#6c757b"/></linearGradient>
+      </defs>
+      <path d="M4 10 Q1 16 4 22 L150 21 Q158 20 166 18 L176 17.2 L176 14.8 L166 14 Q158 12 150 11 Z" fill="url(#sc-h)" stroke="#2c3236" stroke-width=".6"/>
+      <g stroke="#3c4449" stroke-width=".8" opacity=".7"><line x1="28" y1="12.5" x2="28" y2="19.5"/><line x1="33" y1="12.5" x2="33" y2="19.5"/><line x1="38" y1="12.5" x2="38" y2="19.5"/><line x1="43" y1="12.5" x2="43" y2="19.5"/><line x1="48" y1="12.5" x2="48" y2="19.5"/><line x1="53" y1="12.5" x2="53" y2="19.5"/><line x1="58" y1="12.5" x2="58" y2="19.5"/><line x1="63" y1="12.5" x2="63" y2="19.5"/></g>
+      <path d="M174 15.2 L206 13 C232 12 250 15 257 20 C238 21.5 210 20.5 174 17.2 Z" fill="url(#sc-b)" stroke="#3a4247" stroke-width=".5"/>
+      <path d="M206 20.1 C228 20.6 245 20.6 256.5 19.8" stroke="#fff" stroke-width=".6" opacity=".8" fill="none"/>
+    </svg>
+    <div class="deco ruler" id="ruler" aria-hidden="true"></div>
+
+    <!-- атлас -->
+    <button class="obj o-atlas" type="button" data-open="atlas" data-label="Атлас анатомии" aria-label="Атлас анатомии. Открыть">
+      <span class="bk">
+        <span class="bk-sheet"></span>
+        <span class="bk-photo"><i></i></span>
+        <span class="bk-ribbon"></span>
+        <span class="bk-body" data-cover></span>
+      </span>
+    </button>
+
+    <!-- вырезки -->
+    <button class="obj o-clips" type="button" data-open="clips" data-label="Вырезки" aria-label="Стопка вырезок. Посмотреть">
+      <span class="clips">
+        <span class="cl c3"></span>
+        <span class="cl c2"></span>
+        <span class="cl c1"><span class="gk-head"></span><span class="gk-pic"></span><span class="gk-col a"></span><span class="gk-col b"></span></span>
+      </span>
+    </button>
+
+    <!-- удостоверение -->
+    <button class="obj o-id" type="button" data-open="id" data-label="Служебное удостоверение" aria-label="Служебное удостоверение. Открыть">
+      <span class="idc"><span class="leather-art"><span class="leather"><span class="emb"></span><span class="word">УДОСТОВЕРЕНИЕ</span></span></span></span>
+    </button>
+
+    <!-- бирка -->
+    <button class="obj o-tag" type="button" data-open="tag" data-label="Бирка" aria-label="Бирка. Рассмотреть">
+      <span class="tag-art" data-tag="small"></span>
+    </button>
+
+    <p class="prompt" id="prompt">Осмотрите предметы на столе</p>
+    <div class="plaque" aria-hidden="true">Стол секционный № 3</div>
+  </div>
+</main>
+
+<div class="hoverlabel" id="hoverlabel" aria-hidden="true"></div>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Предмет крупно">
+  <button class="v-close" type="button" id="vClose">Положить на место</button>
+
+  <section class="v-panel" data-panel="atlas" aria-label="Атлас анатомии">
+    <div class="tabrow" id="tabrow" hidden></div>
+    <div class="book" id="book"></div>
+    <div class="v-nav">
+      <button type="button" id="bPrev" aria-label="Назад">←</button>
+      <span class="v-label" id="bLabel"></span>
+      <button type="button" id="bNext" aria-label="Вперёд">→</button>
+    </div>
+  </section>
+
+  <section class="v-panel" data-panel="clips" aria-label="Вырезки">
+    <div class="cards" id="cards"></div>
+    <div class="v-nav">
+      <button type="button" id="cPrev" aria-label="Предыдущая вырезка">←</button>
+      <span class="v-label" id="cLabel"></span>
+      <button type="button" id="cNext" aria-label="Следующая вырезка">→</button>
+    </div>
+  </section>
+
+  <section class="v-panel" data-panel="id" aria-label="Служебное удостоверение">
+    <div class="idv closed" id="idv"></div>
+    <div class="v-nav"><span class="v-label">Нажмите, чтобы открыть или закрыть</span></div>
+  </section>
+
+  <section class="v-panel" data-panel="tag" aria-label="Бирка">
+    <div class="tag-big"><span class="tag-art" data-tag="big"></span></div>
+  </section>
+</div>
+
+<div class="measure" id="measure" aria-hidden="true"></div>
+
+<script>
+/* =====================================================================
+   ДАННЫЕ ПЕРСОНАЖА — заполняются здесь
+   ===================================================================== */
+var DATA = {
+  name: { last: 'Вексель', first: 'Феофан', middle: 'Сергеевич' },
+  age: '',            // возраст
+  photo: '',          // фото: data:image/...
+  appearance: [],     // абзацы описания внешности
+  bio: []             // вырезки: [{ source:'', date:'', title:'', text:['абзац', ...] }, ...]
+};
+
+/* текст характера — без изменений */
+var CHARACTER = [
+'В Феофане Сергеевиче нет ничего примечательного. Вежливый, негромкий, всегда аккуратно одетый. Коллеги считают его спокойным, соседи интеллигентным, а те немногие, кто пытался узнать его ближе, — странным. А внутри всё устроено как в секционном зале: холодно, чисто, разложено по местам и подписано. Чувства в этом порядке тоже есть, у каждого своя полка и свой ярлык. Но какие-то из них пусты по сей день.',
+'Любви Феофан не понимает. Как явление она знакома ему досконально: дофамин, окситоцин, расширенные зрачки, сбившийся пульс. Это предсказуемая цепочка реакций, которую можно уложить в протокол. Но ощущать её не доводилось, как и всерьёз о ней думать. Чувство к матери, например, он зовёт привязанностью: слово сухое, зато верное.',
+'Вместо любви у него интерес, дикий, цепкий, исследовательский и никогда не романтический. Это не компульсия, не преследование и не потеря контроля, но близкое к одержимости понятие. Ближе, чем хотелось бы признать. Привязанность выглядит как почти болезненная жажда знать о человеке больше: как тот думает, почему выбирает именно эти слова, откуда берутся те или иные решения. Порой эта жажда соскальзывает туда, куда не следует, и тогда отвращение в нём способны вызвать только собственные мысли. Сколько будет весить этот мозг на весах? В какой извилине прячется то, что так зацепило? Ответ известен заранее: ни в какой. И всё же вопрос возвращается. Чаще, впрочем, одержимость кончается иначе: человек возносится до уровня Бога.',
+'Ко всему в жизни Феофан подходит с опаской. Любое решение обдумано десяток раз, проверено, перепроверено и со спокойной душой отложено. Люди не исключение: большинство проходит мимо, как фоновый шум. Но стоит появиться кому-то особенному, тому, кто выделяется из толпы не лицом и не статусом, а самим устройством мышления, и вся осторожность окажется бесполезной. Такой человек поднимется туда, где его уже нельзя оценивать как материал.',
+'Сам Вексель никогда не назвал бы это вознесением.',
+'Отвращения нет: у людей его профессии оно не выживает. Опарыши в мягких тканях, содержимое кишечника, гнилостные изменения, тела, пролежавшие в запертой квартире до весны или поднятые из Невы после ледохода. За годы практики слово «фу» просто выпало из словаря. Он не морщится, не отводит глаз и не задерживает дыхания.',
+'И при этом он один из самых придирчивых людей, каких можно встретить. Разборчив в одежде и во вкусах, замечает пыль там, где её пропустит самая въедливая домработница. А всё просто: брезгливость — реакция тела, требовательность — выбор.',
+'В голове до сих пор щёлкает бедность, в которой Феофан рос. Комната в коммуналке на Лиговке, чужие стоптанные ботинки, пустые макароны, одежда, ношенная до него двумя пацанами. Мальчишкой он рано понял, что голод — это не чувство, а состояние организма. От него даже была польза — рёбра можно пересчитать в зеркале без всякого атласа.',
+'Теперь можно позволить себе лучшее, и он выбирает лучшее: медленно, тщательно. Хорошую шерсть узнаёт на ощупь, обувь носит годами и сам относит в ремонт, на кофе не экономит никогда. Дешёвое не покупает не из снобизма: дешёвое пахнет детством. Холодильник никогда не бывает пустым, хотя готовит Феофан только на одного. Но щелчок никуда не делся. У кассы мужчина до сих пор машинально прикидывает, сколько буханок хлеба стоила бы эта покупка в девяносто четвёртом, а новую дорогую вещь неделями бережёт, прежде чем решится надеть. Комфорт является лишь доказательством того, что мальчик с Лиговки остался в прошлом.',
+'Красоту Феофан видит, просто не там, где её ищут другие. Красивы мышцы: изящный ход сухожилий кисти, сложная архитектура височно-нижнечелюстного сустава, слаженная работа диафрагмы. Анатомические атласы он листает с тем же тихим восторгом, с каким искусствоведы бродят по залам Эрмитажа.',
+'Покажи ему трёх женщин и попроси выбрать самую красивую, и на лица он не взглянет. Отметит, у какой правильная осанка, у какой хорошо развиты мышцы шеи, у какой здоровый процент жировой ткани. Само понятие красоты давно обесценено: лицо — это хрящи, мясо и кожа, натянутая поверх. Идеальные черты не вызывают трепета, только глухое безразличие, как и уродливые, как и необычные. Для него это три варианта одной анатомической нормы.',
+'Близость — лишь ещё один физиологический процесс в длинном ряду прочих: нагрузка, выброс дофамина, реакции, известные наперёд. Осуждать тех, для кого она важна, нелепо, смотреть на них свысока — тем более. Просто ни женщины, ни мужчины не будят того отклика, ради которого люди теряют голову. Мог бы? Вполне. Стал бы держаться? Нет. Ни запрета, ни страха — так равнодушный к кофе смотрит на полную чашку: выпить можно, но зачем.',
+'Голова у Феофана тяжёлая, взгляд трезвый до жестокости. Мысли сами сворачивают туда, куда заходить не хочется: к смерти, к несбывшемуся, к страху так и не исполнить собственное существование. Чужие смерти проходят сквозь него, не оставляя следа, но примерить их на себя страшно до холода под рёбрами. И всё-таки примеряет. Бывает, перед сном, в темноте, сам собой диктуется протокол собственного вскрытия: рост, вес, состояние печени, которое он представляет довольно точно, и сухая строка о причине смерти.',
+'В небытие нет ничего: ни света, ни продолжения. Слишком часто мужчина видел, что остаётся от человека, чтобы надеяться на большее. Потому и твердит себе, что хочет жить вечно. Не мечта и не вера, а единственный протест логике и здравому смыслу.',
+'Дом, жена, дети — рубежи, положенные каждому человеку, простые и понятные. Ценность их очевидна, недостижимость тоже. У коллег на рабочих столах стоят фотографии в рамках, в разговорах мелькают выпускные и ипотеки, а мать, пока ещё помнила, кто он такой, при каждой встрече спрашивала, когда наконец-то сыночек женится. Выбрать ему кого-то не выйдет никогда, и дело не в нежелании Феофана: просто неясно, по какому признаку вообще выбирают. Все известные ему критерии сводятся либо к телу, либо к удобству, а ни то ни другое ему не нужно от кого-то.',
+'Хуже всего то, что работа каждый день показывает, как выглядит жизнь, прожитая с кем-то. Светлая полоска кожи под обручальным кольцом, борозда, которую оно оставило за тридцать лет. Родственники в коридоре, которые приходят на опознание. И у самого Феофана нет ничего из этого, ни следа на безымянном, ни близких друзей. И с каждым годом всё чаще и чаще он задаёт себе вопрос: если завтра на столе окажется он сам, кто придёт его забирать?',
+'В настоящем мире Вексель мелкая сошка: эксперт государственного бюро на государственной зарплате, подпись под заключением. Чтобы не утонуть, приходится возвышаться в собственной голове, за счёт чужих провалов и своих маленьких побед. Ошибка коллеги в протоколе, неверный диагноз в больничной карте, чья-то разрушенная жизнь в материалах дела — всё ложится на весы и делает его чуть тяжелее. Низко? Безусловно. Но суда над собой не будет, оправдание найдётся всегда: без него в собственных глазах не набралось бы и пылинки.',
+'Равных у Феофана не бывает. Внизу те, чьи ошибки держат его на плаву. Вокруг материал и будущие тела на холодных столах. Изредка, высоко над всеми, тот, кого он вознёс сам и до кого теперь не дотянуться. Одной ступени на двоих не существует.'
+];
+
+/* справочный текст атласа */
+var HAND_TEXT = [
+'На тыльной поверхности кисти под кожей и тонкой фасцией лежат сухожилия мышц-разгибателей. На уровне запястья они проходят под удерживателем разгибателей (retinaculum musculorum extensorum) по шести костно-фиброзным каналам. Каждый канал выстлан собственным синовиальным влагалищем.',
+'Считая от лучевого края, в каналах лежат: I — длинная мышца, отводящая большой палец, и короткий разгибатель большого пальца; II — длинный и короткий лучевые разгибатели запястья; III — длинный разгибатель большого пальца, огибающий дорсальный бугорок лучевой кости; IV — разгибатель пальцев и разгибатель указательного пальца; V — разгибатель мизинца; VI — локтевой разгибатель запястья.',
+'Четыре сухожилия разгибателя пальцев на тыле кисти связаны косыми межсухожильными соединениями (connexus intertendinei). Они ограничивают независимое разгибание пальцев, особенно безымянного.',
+'У основания пальцев каждое сухожилие переходит в тыльный апоневроз. Его срединный пучок прикрепляется к основанию средней фаланги, боковые пучки сходятся над ней и достигают основания дистальной фаланги.'
+];
+var TMJ_TEXT = [
+'Височно-нижнечелюстной сустав образован головкой нижней челюсти, нижнечелюстной ямкой и суставным бугорком височной кости. В отличие от большинства суставов его поверхности покрыты не гиалиновым, а волокнистым хрящом.',
+'Между костями лежит суставной диск — двояковогнутая волокнисто-хрящевая пластинка. По краям он сращён с капсулой и делит полость сустава на два изолированных отдела: верхний и нижний.',
+'Правый и левый суставы движутся только вместе, поэтому их относят к комбинированным. При небольшом открывании рта головка вращается в нижнем отделе вокруг поперечной оси. При широком она вместе с диском скользит вперёд, на суставной бугорок.',
+'Латеральная крыловидная мышца прикрепляется верхней головкой к диску и капсуле, нижней — к крыловидной ямке на шейке нижней челюсти. Сокращаясь с обеих сторон, она выдвигает челюсть вперёд.'
+];
+var DIA_TEXT = [
+'Диафрагма — куполообразная мышечно-сухожильная перегородка между грудной и брюшной полостями и главная дыхательная мышца. Её пучки начинаются по всей окружности нижней апертуры грудной клетки и сходятся к сухожильному центру, имеющему форму трилистника.',
+'По месту начала различают грудинную часть (от мечевидного отростка), рёберную (от внутренней поверхности хрящей шести нижних рёбер) и поясничную. Поясничная часть образует правую и левую ножки: правая начинается от тел L1–L3, левая — от L1–L2.',
+'Через диафрагму проходят три крупных отверстия: отверстие нижней полой вены в сухожильном центре (уровень Th VIII), пищеводное отверстие между пучками правой ножки (Th X) и аортальное отверстие позади срединной дугообразной связки (Th XII).',
+'Диафрагму иннервирует диафрагмальный нерв (сегменты C3–C5). При вдохе её купола уплощаются и опускаются, и вертикальный размер грудной полости увеличивается.'
+];
+
+window.APP = window.APP || {};
+(function(){
+  var APP=window.APP;
+  var root=document.documentElement;
+  var reduce=window.matchMedia?matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
+  var canHover=window.matchMedia?matchMedia('(hover: hover)').matches:false;
+  function $(s,r){return (r||document).querySelector(s);}
+  function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+  function f(n){return n.toFixed(1);}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var fullName=DATA.name.last+' '+DATA.name.first+' '+DATA.name.middle;
+  var shortName=DATA.name.last+' '+DATA.name.first.charAt(0)+'. '+DATA.name.middle.charAt(0)+'.';
+  APP.reduce=reduce; APP.fullName=fullName; APP.shortName=shortName;
+
+  /* ---------- свет ---------- */
+  var sw=$('#lightSwitch'), swState=$('.sw-state',sw);
+  function effective(){
+    var t=root.getAttribute('data-theme');
+    if(t==='light'||t==='dark') return t;
+    return (window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  }
+  APP.effectiveTheme=effective;
+  function paint(){
+    var e=effective();
+    swState.textContent=e==='dark'?'дежурный':'верхний';
+    sw.setAttribute('aria-pressed',e==='light'?'true':'false');
+    sw.setAttribute('data-state',e);
+    if(APP.onTheme) APP.onTheme();
+  }
+  try{var saved=localStorage.getItem('vexel-light'); if(saved==='light'||saved==='dark') root.setAttribute('data-theme',saved);}catch(e){}
+  paint();
+  sw.addEventListener('click',function(){
+    var next=effective()==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('vexel-light',next);}catch(e){}
+    paint();
+  });
+  if(window.matchMedia){var mq=matchMedia('(prefers-color-scheme: dark)'); if(mq.addEventListener) mq.addEventListener('change',paint);}
+
+  /* ---------- лампа ---------- */
+  var fl=$('#flicker'), lampDone=false;
+  APP.lampOn=function(){
+    if(lampDone) return; lampDone=true;
+    if(reduce.matches){fl.style.opacity=0; return;}
+    fl.classList.add('on');
+  };
+  fl.addEventListener('animationend',function(){fl.classList.remove('on'); fl.style.opacity=0;});
+  setTimeout(function(){APP.lampOn();},6000);
+  function cssFlicker(){
+    if(document.body.classList.contains('no3d') && !reduce.matches && !document.hidden){
+      var seq=[.32,0,.16,0,.46,.06,0], i=0;
+      (function step(){fl.style.opacity=seq[i]; i++; if(i<seq.length) setTimeout(step,40+Math.random()*70);})();
+    }
+    setTimeout(cssFlicker,10000+Math.random()*15000);
+  }
+  setTimeout(cssFlicker,9000);
+  APP.hidePrompt=function(){ $$('.prompt,.prompt3d').forEach(function(p){p.classList.add('gone');}); };
+
+  /* ---------- шрифты и фото ---------- */
+  APP.fontsReady=function(){
+    if(!document.fonts||!document.fonts.load) return Promise.resolve();
+    var list=['700 40px "PT Serif"','400 40px "PT Serif"','italic 400 40px "PT Serif"','400 40px "Marck Script"','italic 500 40px "Cormorant Garamond"','500 40px "Cormorant Garamond"'];
+    var all=Promise.all(list.map(function(x){return document.fonts.load(x).catch(function(){});}));
+    return Promise.race([all,new Promise(function(r){setTimeout(r,2500);})]);
+  };
+  APP.photoReady=function(){
+    return new Promise(function(res){
+      if(!DATA.photo) return res(null);
+      var im=new Image(); im.onload=function(){res(im);}; im.onerror=function(){res(null);}; im.src=DATA.photo;
+    });
+  };
+
+  /* ---------- общие кусочки ---------- */
+  function photoBox(){
+    return DATA.photo ? '<img src="'+DATA.photo+'" alt="'+esc(fullName)+'">' : '<span>фото</span>';
+  }
+  function clipperSVG(){
+    var d='M11 30 V66 A5 5 0 0 0 21 66 V14 A8 8 0 0 0 5 14 V74 A10 10 0 0 0 25 74 V34';
+    return '<svg class="clipper" viewBox="0 0 30 92" aria-hidden="true"><path d="'+d+'"/><path d="'+d+'"/></svg>';
+  }
+  function coverArt(back){
+    if(APP.coverCanvas) return '<span class="cover-art" data-cv="'+(back?'back':'front')+'"></span>';
+    return '<span class="cover-art"><span class="cover-skin'+(back?' back-skin':'')+'"><span class="cover-frame">'+
+      '<span class="cover-title">АТЛАС<br>АНАТОМИИ<br>ЧЕЛОВЕКА</span><span class="cover-rule"></span>'+
+      '<span class="cover-sub">Anatomia humana</span><span class="cover-vol">ТОМ I</span></span></span></span>';
+  }
+  function stampSVG(id){
+    return '<svg class="stamp" viewBox="0 0 200 200" aria-hidden="true" style="filter:url(#ink)">'+
+      '<defs><path id="'+id+'" d="M100,100 m-77,0 a77,77 0 1,1 154,0 a77,77 0 1,1 -154,0"/></defs>'+
+      '<g fill="none" stroke="currentColor"><circle cx="100" cy="100" r="95" stroke-width="4"/><circle cx="100" cy="100" r="89" stroke-width="1.4"/><circle cx="100" cy="100" r="60" stroke-width="1.4"/></g>'+
+      '<g fill="currentColor" font-family="PT Serif, Times New Roman, serif" font-weight="700">'+
+      '<text font-size="12" letter-spacing="1"><textPath href="#'+id+'" textLength="472" lengthAdjust="spacing">БЮРО СУДЕБНО-МЕДИЦИНСКОЙ ЭКСПЕРТИЗЫ ✶ САНКТ-ПЕТЕРБУРГ ✶</textPath></text>'+
+      '<text x="100" y="98" text-anchor="middle" font-size="13">ДЛЯ</text><text x="100" y="116" text-anchor="middle" font-size="12">ДОКУМЕНТОВ</text></g></svg>';
+  }
+  function tagArt(big){
+    var age=DATA.age?esc(DATA.age):'';
+    return '<svg class="tag-string" viewBox="0 0 120 90" aria-hidden="true"><path d="M60 88 C58 60 28 52 38 22 C44 6 72 2 104 -14"/></svg>'+
+      '<span class="tag-card">'+
+      '<small>№</small><b class="big">0</b>'+
+      '<small>фамилия, имя, отчество</small><b>'+esc(big?fullName:shortName)+'</b>'+
+      '<small>возраст</small><b>'+age+'</b>'+
+      '<small>отделение</small><b>танатол.</b>'+
+      '</span>';
+  }
+  $('[data-cover]').innerHTML=coverArt(false);
+  $$('[data-tag]').forEach(function(el){el.innerHTML=tagArt(el.getAttribute('data-tag')==='big');});
+
+  /* ---------- линейка для запасной сцены ---------- */
+  (function(){
+    var k=2.6,ln='',tx='';
+    for(var i=0;i<=100;i++){var x=44+i*k,h=i%10===0?15:(i%5===0?10:6);ln+='<line x1="'+f(x)+'" y1="0" x2="'+f(x)+'" y2="'+h+'"/>';if(i%10===0&&i>0)tx+='<text x="'+f(x)+'" y="27" text-anchor="middle">'+(i/10)+'</text>';}
+    for(var j=0;j<=70;j++){var y=44+j*k,w=j%10===0?15:(j%5===0?10:6);ln+='<line x1="0" y1="'+f(y)+'" x2="'+w+'" y2="'+f(y)+'"/>';if(j%10===0&&j>0)tx+='<text x="20" y="'+f(y+3.5)+'">'+(j/10)+'</text>';}
+    $('#ruler').innerHTML='<svg viewBox="0 0 314 236" style="display:block;width:100%;height:auto">'+
+      '<path d="M0 0 H314 V44 H44 V236 H0 Z" fill="#ebeae4" stroke="#111" stroke-width="1"/>'+
+      '<g stroke="#111" stroke-width=".7">'+ln+'</g><g font-size="9" fill="#111" font-family="Arial,sans-serif">'+tx+'</g></svg>';
+  })();
+
+  /* =====================================================================
+     ИЛЛЮСТРАЦИИ АТЛАСА
+     ===================================================================== */
+  function handSVG(uid){
+    var bones=[
+      [172,610,176,516,44],[248,610,247,522,28],
+      [138,452,100,385,15],[164,448,150,328,13],[192,446,194,320,13.5],[220,450,234,330,12.5],[240,456,268,350,12],
+      [96,376,74,322,12],[71,314,60,282,11],
+      [148,318,138,240,11],[137,232,132,186,10],[131,178,128,150,9],
+      [195,310,197,226,11.5],[197,218,198,166,10],[198,158,199,126,9],
+      [236,320,248,244,10.5],[249,236,256,188,9.5],[257,180,261,152,8.5],
+      [270,341,287,280,9.5],[289,272,297,238,8.5],[298,230,302,208,8]
+    ];
+    var carp=[[143,470,13,11,-20],[166,462,11,10,0],[193,463,13,15,0],[223,467,14,13,10],[166,492,17,11,-15],[198,494,14,12,0],[228,494,12,11,10]];
+    var flesh='<polygon points="122,476 126,430 140,332 194,312 238,320 274,338 262,420 262,600 140,600"/>';
+    var out='',fill='',shade='';
+    bones.forEach(function(b,idx){
+      var x1=b[0],y1=b[1],x2=b[2],y2=b[3],w=b[4];
+      var dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+      var r=w*.6; if(L<r*2.4) r=L/2.4;
+      var a=[x1+ux*r,y1+uy*r], c=[x2-ux*r,y2-uy*r], s=w*.84;
+      if(idx>1) flesh+='<line x1="'+f(x1)+'" y1="'+f(y1)+'" x2="'+f(x2)+'" y2="'+f(y2)+'" stroke-width="'+f(w*2.3)+'"/>';
+      out+='<circle cx="'+f(a[0])+'" cy="'+f(a[1])+'" r="'+f(r+1.3)+'"/><circle cx="'+f(c[0])+'" cy="'+f(c[1])+'" r="'+f(r+1.3)+'"/><line x1="'+f(a[0])+'" y1="'+f(a[1])+'" x2="'+f(c[0])+'" y2="'+f(c[1])+'" stroke-width="'+f(s+2.6)+'"/>';
+      fill+='<circle cx="'+f(a[0])+'" cy="'+f(a[1])+'" r="'+f(r)+'"/><circle cx="'+f(c[0])+'" cy="'+f(c[1])+'" r="'+f(r)+'"/><line x1="'+f(a[0])+'" y1="'+f(a[1])+'" x2="'+f(c[0])+'" y2="'+f(c[1])+'" stroke-width="'+f(s)+'"/>';
+      var px=-uy,py=ux,o=w*.2;
+      shade+='<line x1="'+f(a[0]+px*o+ux*r*.4)+'" y1="'+f(a[1]+py*o+uy*r*.4)+'" x2="'+f(c[0]+px*o-ux*r*.4)+'" y2="'+f(c[1]+py*o-uy*r*.4)+'"/>';
+    });
+    carp.forEach(function(e){
+      var t=' transform="rotate('+e[4]+' '+e[0]+' '+e[1]+')"';
+      out+='<ellipse cx="'+e[0]+'" cy="'+e[1]+'" rx="'+(e[2]+1.3)+'" ry="'+(e[3]+1.3)+'"'+t+'/>';
+      fill+='<ellipse cx="'+e[0]+'" cy="'+e[1]+'" rx="'+e[2]+'" ry="'+e[3]+'"'+t+'/>';
+    });
+    var tendons=[
+      'M160 600 C150 540 132 478 116 420 S 84 336 66 296',
+      'M178 600 C175 525 162 470 156 418 S 143 300 135 196',
+      'M195 600 C195 525 194 472 194 418 S 196 300 197 172',
+      'M211 600 C214 525 221 472 226 420 S 245 300 253 196',
+      'M226 600 C233 528 248 474 255 428 S 283 322 292 246'
+    ];
+    var ten='';
+    tendons.forEach(function(d){ten+='<path d="'+d+'"/>';});
+    var ret='M136 510 Q200 500 268 512 L268 534 Q200 524 136 534 Z', hatch='';
+    for(var x=132;x<272;x+=6) hatch+='<line x1="'+x+'" y1="500" x2="'+(x+8)+'" y2="540"/>';
+    var labs=[
+      {t:[199,138],e:[314,114],at:[318,118],L:['Phalanx distalis']},
+      {t:[248,292],e:[314,232],at:[318,236],L:['Tendo m. extensoris','digitorum']},
+      {t:[258,398],e:[314,368],at:[318,372],L:['Os metacarpale V']},
+      {t:[234,472],e:[314,446],at:[318,450],L:['Ossa carpi']},
+      {t:[256,522],e:[314,506],at:[318,510],L:['Retinaculum','mm. extensorum']},
+      {t:[137,236],e:[90,198],at:[16,202],L:['Articulatio','interphalangea']},
+      {t:[135,490],e:[128,536],at:[16,544],L:['Tendo m. extensoris','pollicis longi']}
+    ];
+    var lead='',dots='',text='';
+    labs.forEach(function(l){
+      lead+='<line x1="'+l.t[0]+'" y1="'+l.t[1]+'" x2="'+l.e[0]+'" y2="'+l.e[1]+'"/>';
+      dots+='<circle cx="'+l.t[0]+'" cy="'+l.t[1]+'" r="1.6"/>';
+      text+='<text x="'+l.at[0]+'" y="'+l.at[1]+'">'+l.L.map(function(s,i){return '<tspan x="'+l.at[0]+'" dy="'+(i?15:0)+'">'+s+'</tspan>';}).join('')+'</text>';
+    });
+    return '<svg viewBox="0 0 470 580" role="img" aria-label="Кисть правая, тыльная поверхность: кости и сухожилия разгибателей">'+
+      '<defs><clipPath id="ret-'+uid+'"><path d="'+ret+'"/></clipPath></defs>'+
+      '<g class="a-flesh" opacity=".1">'+flesh+'</g>'+
+      '<g class="a-out">'+out+'</g><g class="a-fill">'+fill+'</g><g class="a-shade">'+shade+'</g>'+
+      '<path class="a-ret" d="'+ret+'"/><g class="a-hatch" clip-path="url(#ret-'+uid+')">'+hatch+'</g>'+
+      '<g class="a-ten">'+ten+'</g><g class="a-ten-hi">'+ten+'</g>'+
+      '<path class="a-jun" d="M196 372 Q215 360 236 362"/><path class="a-jun" d="M238 372 Q252 368 266 380"/>'+
+      '<g class="a-lead">'+lead+'</g><g class="a-dot">'+dots+'</g><g class="a-lab">'+text+'</g>'+
+      '<g transform="rotate(-6 70 80)"><text class="a-pencil" x="18" y="62">ход сухожилий —</text><text class="a-pencil" x="40" y="86">изящно.</text></g>'+
+      '<path class="a-arrow" d="M104 96 Q132 120 140 168"/><path class="a-arrow" d="M134 160 L140 169 L143 158"/>'+
+      '</svg>';
+  }
+
+  function callouts(list){
+    var s='';
+    list.forEach(function(c){
+      s+='<g class="co"><line class="a-lead" x1="'+c[1]+'" y1="'+c[2]+'" x2="'+c[3]+'" y2="'+c[4]+'"/><circle class="a-dot" cx="'+c[1]+'" cy="'+c[2]+'" r="1.6" style="fill:var(--sepia);stroke:none"/>'+
+        '<circle cx="'+c[3]+'" cy="'+c[4]+'" r="9"/><text x="'+c[3]+'" y="'+(c[4]+3.8)+'">'+c[0]+'</text></g>';
+    });
+    return s;
+  }
+  function hatchLines(x0,x1,y0,y1,step,slope){
+    var s='';
+    for(var x=x0-(y1-y0);x<x1;x+=step) s+='<line x1="'+x+'" y1="'+y1+'" x2="'+(x+(y1-y0)*slope)+'" y2="'+y0+'"/>';
+    return s;
+  }
+
+  function tmjSVG(uid){
+    var temporal='M20 120 L20 62 C60 44 120 56 180 40 C240 26 300 48 360 34 C400 26 430 42 450 36 L450 234 C428 246 382 248 362 232 C350 222 344 204 330 198 C318 196 300 138 255 140 C205 142 190 198 150 198 C110 198 70 128 20 120 Z';
+    var mand='M223 196 C223 178 238 170 255 170 C274 170 288 180 288 198 C288 214 280 222 282 240 L298 400 C268 412 236 394 200 406 C160 418 118 400 72 410 C66 372 74 336 66 300 C66 278 72 262 84 252 C104 266 140 312 172 310 C196 308 210 276 218 250 C221 236 223 214 223 196 Z';
+    var disc='M172 198 C196 176 220 148 255 145 C292 142 310 176 318 200 C306 178 288 168 262 168 C242 168 232 172 222 176 C208 182 192 190 180 200 Z';
+    var supHead='M20 196 C80 194 140 198 180 199 L186 208 C140 212 80 215 20 218 Z';
+    var infHead='M20 238 C90 238 170 230 224 228 L226 242 C170 250 90 268 20 276 Z';
+    var fib='';
+    for(var i=0;i<4;i++){fib+='<path d="M20 '+(200+i*5)+' C90 '+(199+i*4.5)+' 140 '+(201+i*2.5)+' 182 '+(201+i*1.5)+'"/>';}
+    for(var j=0;j<6;j++){fib+='<path d="M20 '+(242+j*6)+' C90 '+(241+j*5)+' 170 '+(232+j*2)+' 224 '+(231+j*1.8)+'"/>';}
+    var co=callouts([
+      [1,290,150,318,84],[2,152,196,132,84],[3,262,156,232,84],[4,265,200,402,262],
+      [5,284,238,402,304],[6,300,252,402,346],[7,100,208,36,160],[8,128,252,34,330],[9,404,196,426,104]
+    ]);
+    return '<svg viewBox="0 0 470 430" role="img" aria-label="Височно-нижнечелюстной сустав, сагиттальный распил">'+
+      '<defs><clipPath id="tb-'+uid+'"><path d="'+temporal+'"/></clipPath><clipPath id="md-'+uid+'"><path d="'+mand+'"/></clipPath></defs>'+
+      '<path class="a-bone" d="'+temporal+'"/>'+
+      '<g class="a-hatch" clip-path="url(#tb-'+uid+')">'+hatchLines(20,450,26,250,7,.6)+'</g>'+
+      '<ellipse class="a-hole" cx="404" cy="196" rx="27" ry="23"/>'+
+      '<path class="a-bone" d="'+mand+'"/>'+
+      '<g class="a-hatch" clip-path="url(#md-'+uid+')" style="opacity:.25">'+hatchLines(60,300,170,420,9,.5)+'</g>'+
+      '<path class="a-muscle" d="'+disc+'" style="fill-opacity:.32"/>'+
+      '<path class="a-line" d="M318 200 C330 206 342 204 352 190"/><path class="a-line" d="M318 200 C312 214 298 224 288 230"/>'+
+      '<path class="a-dash" d="M150 200 C150 232 196 252 226 252"/><path class="a-dash" d="M334 200 C334 236 306 254 286 256"/>'+
+      '<path class="a-muscle" d="'+supHead+'"/><path class="a-muscle" d="'+infHead+'"/>'+
+      '<g class="a-fiber-l" fill="none">'+fib+'</g>'+
+      co+
+      '<text class="a-side" x="20" y="414">anterior</text><text class="a-side" x="450" y="414" text-anchor="end">posterior</text>'+
+      '</svg>';
+  }
+
+  function diaSVG(uid){
+    var outl='M235 40 C350 40 435 90 435 165 C435 230 395 270 340 282 C300 290 280 286 262 280 L208 280 C190 286 170 290 130 282 C75 270 35 230 35 165 C35 90 120 40 235 40 Z';
+    var tre='M235 72 C262 72 280 88 282 108 C312 100 352 112 352 140 C352 166 322 176 296 168 C286 182 262 190 240 188 C216 190 186 182 172 168 C146 178 112 168 110 142 C108 114 150 100 186 108 C188 88 208 72 235 72 Z';
+    var cx=235,cy=158,fb='';
+    for(var a=0;a<360;a+=4){
+      var t=a*Math.PI/180;
+      fb+='<line x1="'+f(cx+Math.cos(t)*210)+'" y1="'+f(cy+Math.sin(t)*132)+'" x2="'+f(cx+Math.cos(t)*60)+'" y2="'+f(cy-16+Math.sin(t)*34)+'"/>';
+    }
+    var verts='';
+    [[286,326],[332,372],[378,418]].forEach(function(v){verts+='<rect class="a-bone" x="203" y="'+v[0]+'" width="64" height="'+(v[1]-v[0])+'" rx="9"/>';});
+    var crusR='M214 200 C206 240 206 300 214 410 L230 410 C226 320 228 260 240 214 Z';
+    var crusL='M262 226 C270 260 268 320 260 372 L248 372 C252 320 254 270 250 236 Z';
+    var co=callouts([
+      [1,262,118,440,30],[2,384,160,452,112],[3,235,52,176,18],[4,190,150,28,34],
+      [5,252,208,352,330],[6,235,262,372,372],[7,214,330,130,350],[8,262,330,404,404],[9,150,286,58,312]
+    ]);
+    return '<svg viewBox="0 0 470 430" role="img" aria-label="Диафрагма, вид снизу">'+
+      '<defs><clipPath id="do-'+uid+'"><path d="'+outl+'"/></clipPath><clipPath id="dt-'+uid+'"><path d="'+tre+'"/></clipPath></defs>'+
+      verts+
+      '<rect x="224" y="262" width="22" height="160" style="fill:var(--tendon);fill-opacity:.55;stroke:var(--sepia);stroke-width:1"/>'+
+      '<path d="'+outl+'" style="fill:var(--tendon);fill-opacity:.2;stroke:var(--sepia);stroke-width:1.4"/>'+
+      '<g class="a-fiber" clip-path="url(#do-'+uid+')">'+fb+'</g>'+
+      '<path d="M228 22 L242 22 L239 48 L231 48 Z" class="a-bone"/>'+
+      '<path class="a-bone" d="'+tre+'"/>'+
+      '<g class="a-hatch" clip-path="url(#dt-'+uid+')" style="opacity:.25">'+hatchLines(108,354,70,192,6,.8)+'</g>'+
+      '<path class="a-muscle" d="'+crusR+'"/><path class="a-muscle" d="'+crusL+'"/>'+
+      '<ellipse class="a-hole" cx="190" cy="150" rx="12" ry="10"/>'+
+      '<ellipse class="a-hole" cx="252" cy="208" rx="10" ry="14"/>'+
+      '<circle class="a-hole" cx="235" cy="270" r="11" style="fill:var(--tendon);fill-opacity:.8"/>'+
+      '<path class="a-line" d="M220 270 Q235 248 250 270"/>'+
+      '<path class="a-line" d="M204 300 Q178 280 150 288 Q120 276 92 270"/><path class="a-line" d="M266 300 Q292 280 320 288 Q350 276 378 270"/>'+
+      co+
+      '<text class="a-side" x="18" y="418">dexter</text><text class="a-side" x="452" y="418" text-anchor="end">sinister</text>'+
+      '</svg>';
+  }
+
+  /* =====================================================================
+     АТЛАС: страницы
+     ===================================================================== */
+  function textPage(rh,num,head,latin,paras){
+    return '<div class="rh"><span>Anatomia humana</span><span>'+rh+'</span></div>'+
+      '<div class="pg-body at-text"><h3 class="at-h">'+head+'</h3><p class="at-l">'+latin+'</p>'+
+      paras.map(function(p){return '<p>'+p+'</p>';}).join('')+'</div>'+
+      '<div class="pg-foot">'+num+'</div>';
+  }
+  function platePage(rh,num,title,latin,svg,legend,cap){
+    return '<div class="rh"><span>Anatomia humana</span><span>'+rh+'</span></div>'+
+      '<p class="pl-title">'+title+'</p><p class="pl-sub">'+latin+'</p>'+
+      '<div class="plate">'+svg+'</div>'+
+      (legend?'<div class="legend">'+legend.map(function(l,i){return '<div>'+(i+1)+' — '+l+'</div>';}).join('')+'</div>':'')+
+      (cap?'<p class="pl-cap">'+cap+'</p>':'')+
+      '<div class="pg-foot">'+num+'</div>';
+  }
+  function contentsPage(){
+    function row(t,n,go){return '<button type="button" class="toc-row" data-goto="'+go+'"><span class="t">'+t+'</span><span class="d"></span><span class="n">'+n+'</span></button>';}
+    return '<div class="pg-body"><p class="toc-h">СОДЕРЖАНИЕ</p>'+
+      '<p class="toc-sec">'+esc(fullName)+'</p>'+
+      row('Внешность','I','appear')+
+      row('Характер','II','char-0')+
+      '<p class="toc-sec">Анатомические таблицы</p>'+
+      row('Таблица XXIV. Сухожилия разгибателей кисти','87','hand-text')+
+      row('Таблица XXXI. Височно-нижнечелюстной сустав','113','tmj-text')+
+      row('Таблица LX. Диафрагма','205','dia-text')+
+      '</div><span class="exlib">Ф. Вексель</span>';
+  }
+  function appearPage(){
+    var desc=DATA.appearance.length
+      ? '<div class="ap-text ins">'+DATA.appearance.map(function(p){return '<p>'+esc(p)+'</p>';}).join('')+'</div>'
+      : '<div class="ruled ap-ruled"></div>';
+    return '<p class="ins-name">'+esc(fullName.toUpperCase())+'</p><p class="ins-h">Внешность</p>'+
+      '<div class="ap-photo"><div class="print">'+clipperSVG()+'<div class="img">'+photoBox()+'</div></div></div>'+desc;
+  }
+
+  var SECTIONS=[
+    {id:'appear',label:'Внешность',color:'#6b2b27'},
+    {id:'char-0',label:'Характер',color:'#33475a'},
+    {id:'hand-text',label:'Анатомия',color:'#4d5838'}
+  ];
+
+  function buildSides(L){
+    var S=[];
+    S.push({id:'cover',kind:'cover',title:'Атлас анатомии человека',html:coverArt(false)});
+    S.push({id:'contents',kind:'atlas',title:'Содержание',html:contentsPage()});
+    S.push({id:'appear',kind:'insert',title:'Внешность',html:appearPage()});
+    var chars=paginateCharacter(L);
+    chars.forEach(function(h,i){S.push({id:'char-'+i,kind:'insert',title:'Характер',html:h});});
+    if(chars.length%2===1) S.push({id:'char-end',kind:'insert',blank:true,title:'Характер',html:''});
+    S.push({id:'hand-text',kind:'atlas',title:'Таблица XXIV · кисть',html:textPage('Кисть','86','Сухожилия разгибателей кисти','Tendines musculorum extensorum manus',HAND_TEXT)});
+    S.push({id:'hand-plate',kind:'atlas',title:'Таблица XXIV · кисть',html:platePage('Кисть','87','Таблица XXIV','Manus dextra, facies dorsalis',handSVG('h'+L.mode),null,'Кисть правая, тыльная поверхность. Кости и сухожилия разгибателей.')});
+    S.push({id:'tmj-text',kind:'atlas',title:'Таблица XXXI · сустав',html:textPage('Суставы головы','112','Височно-нижнечелюстной сустав','Articulatio temporomandibularis',TMJ_TEXT)});
+    S.push({id:'tmj-plate',kind:'atlas',title:'Таблица XXXI · сустав',html:platePage('Суставы головы','113','Таблица XXXI','Articulatio temporomandibularis, sectio sagittalis',tmjSVG('t'+L.mode),[
+      'нижнечелюстная ямка','суставной бугорок','суставной диск','головка нижней челюсти','шейка нижней челюсти','суставная капсула','латеральная крыловидная мышца, верхняя головка','латеральная крыловидная мышца, нижняя головка','наружный слуховой проход'])});
+    S.push({id:'dia-text',kind:'atlas',title:'Таблица LX · диафрагма',html:textPage('Мышцы туловища','204','Диафрагма','Diaphragma',DIA_TEXT)});
+    S.push({id:'dia-plate',kind:'atlas',title:'Таблица LX · диафрагма',html:platePage('Мышцы туловища','205','Таблица LX','Diaphragma, facies inferior',diaSVG('d'+L.mode),[
+      'сухожильный центр','рёберная часть','грудинная часть','отверстие нижней полой вены','пищеводное отверстие','аортальное отверстие','правая ножка','левая ножка','дугообразные связки'])});
+    S.push({id:'back',kind:'backcover',title:'Задняя обложка',html:coverArt(true)});
+    return S;
+  }
+
+  /* разбивка текста характера по страницам */
+  function paginateCharacter(L){
+    var m=$('#measure');
+    m.style.width=L.pw+'px'; m.style.height=L.ph+'px';
+    m.style.setProperty('--pw',L.pw+'px'); m.style.setProperty('--ph',L.ph+'px'); m.style.setProperty('--fs',L.fs+'px');
+    var pages=[], first=true, body;
+    function fresh(){
+      m.innerHTML='<div class="pg k-insert">'+(first?'<p class="ins-h">Характер</p>':'')+'<div class="pg-body ins"></div></div>';
+      body=$('.pg-body',m);
+    }
+    function over(){return body.scrollHeight>body.clientHeight+1;}
+    function flush(){pages.push($('.pg',m).innerHTML); first=false; fresh();}
+    fresh();
+    var queue=CHARACTER.map(function(t){return {t:t,cont:false};});
+    var guard=0;
+    while(queue.length && guard++<400){
+      var item=queue.shift();
+      var p=document.createElement('p'); if(item.cont) p.className='cont';
+      p.textContent=item.t; body.appendChild(p);
+      if(!over()) continue;
+      var words=item.t.split(' '), lo=0, hi=words.length-1;
+      while(lo<hi){var mid=Math.ceil((lo+hi)/2); p.textContent=words.slice(0,mid).join(' '); if(over()) hi=mid-1; else lo=mid;}
+      if(lo>0){p.textContent=words.slice(0,lo).join(' '); p.classList.add('split');}
+      else p.remove();
+      if(lo===0 && !body.children.length){p.textContent=item.t; body.appendChild(p); flush(); continue;}
+      flush();
+      queue.unshift({t:words.slice(lo).join(' '),cont:lo>0||item.cont});
+    }
+    if(body.children.length) pages.push($('.pg',m).innerHTML);
+    m.innerHTML='';
+    return pages;
+  }
+
+  /* ---------- книга ---------- */
+  var book=$('#book'), bPrev=$('#bPrev'), bNext=$('#bNext'), bLabel=$('#bLabel'), tabrow=$('#tabrow');
+  var sides=[], leaves=[], cur=0, layoutKey='', LAY=null, posId='cover', singles=[], sIdx=0, busy=false;
+
+  function computeLayout(){
+    var vw=window.innerWidth, vh=window.innerHeight;
+    var spread=vw>=860 && vw/vh>0.95;
+    var avH=vh-(spread?150:200);
+    var pw=spread?Math.min(470,(vw-170)/2,avH/1.41):Math.min(480,vw-24,avH/1.41);
+    pw=Math.max(240,Math.floor(pw));
+    var ph=Math.floor(pw*1.41);
+    var fs=Math.max(12.5,Math.min(15.5,pw/31));
+    return {mode:spread?'s':'m',pw:pw,ph:ph,fs:Math.round(fs*10)/10};
+  }
+  function faceHTML(side,cls){
+    return '<div class="face '+cls+'"><div class="pg k-'+side.kind+'">'+side.html+'</div></div>';
+  }
+  function indexOfId(id){
+    for(var i=0;i<sides.length;i++) if(sides[i].id===id) return i;
+    if(/^char-/.test(id)) return indexOfId('char-0');
+    return 0;
+  }
+  function ensureBook(force){
+    var L=computeLayout(), key=L.mode+L.pw+'-'+L.fs+(APP.coverCanvas?'c':'');
+    if(!force && key===layoutKey) return;
+    layoutKey=key; LAY=L;
+    book.style.setProperty('--pw',L.pw+'px'); book.style.setProperty('--ph',L.ph+'px'); book.style.setProperty('--fs',L.fs+'px');
+    sides=buildSides(L);
+    var idx=indexOfId(posId);
+    if(L.mode==='s'){
+      book.className='book spread';
+      book.innerHTML='<div class="bshadow"></div><div class="boards"></div><div class="stack l"></div><div class="stack r"></div><div class="tabs"></div><div class="glow"></div>';
+      leaves=[];
+      var n=sides.length/2, anchor=$('.tabs',book);
+      for(var i=0;i<n;i++){
+        var leaf=document.createElement('div');
+        leaf.className='leaf';
+        leaf.innerHTML=faceHTML(sides[2*i],'front')+faceHTML(sides[2*i+1],'back');
+        (function(i){leaf.addEventListener('click',function(){ if(i<cur) go(cur-1); else go(cur+1); });})(i);
+        book.insertBefore(leaf,anchor); leaves.push(leaf);
+      }
+      cur=idx===0?0:Math.floor((idx+1)/2);
+      leaves.forEach(function(lf,i){lf.classList.toggle('flipped',i<cur);});
+      renderTabs();
+      setZ(); updateSpread();
+      tabrow.hidden=true;
+    }else{
+      book.className='book single';
+      singles=sides.filter(function(s){return !s.blank;});
+      sIdx=0;
+      for(var k=0;k<singles.length;k++){ if(sides.indexOf(singles[k])>=idx){sIdx=k;break;} }
+      book.innerHTML='<div class="glow"></div>';
+      book.insertBefore(singlePage(singles[sIdx]),book.firstChild);
+      renderTabRow(); tabrow.hidden=false;
+      updateSingle();
+    }
+    bindGoto(book);
+  }
+  function copyCanvas(src,cls){
+    var c=document.createElement('canvas'); c.width=src.width; c.height=src.height;
+    c.getContext('2d').drawImage(src,0,0); if(cls) c.className=cls; return c;
+  }
+  function fillCanvases(scope){
+    $$('[data-cv]',scope).forEach(function(el){
+      if(el.firstChild) return;
+      var src=el.getAttribute('data-cv')==='back'?APP.backCanvas:APP.coverCanvas;
+      if(src) el.appendChild(copyCanvas(src,'cover-img'));
+    });
+  }
+  function bindGoto(scope){
+    fillCanvases(scope);
+    $$('[data-goto]',scope).forEach(function(b){
+      if(b._bound) return; b._bound=true;
+      b.addEventListener('click',function(e){e.stopPropagation(); goId(b.getAttribute('data-goto'));});
+    });
+  }
+  function setZ(){
+    var n=leaves.length;
+    leaves.forEach(function(lf,i){lf.style.zIndex=(i<cur)?(i+1):(n-i);});
+  }
+  function currentSection(pi){
+    var sc=-1;
+    SECTIONS.forEach(function(s,k){ if(indexOfId(s.id)<=pi) sc=k; });
+    return sc;
+  }
+  function renderTabs(){
+    var host=$('.tabs',book), html='';
+    SECTIONS.forEach(function(s,i){html+='<button type="button" class="tab" data-sec="'+i+'" style="--tc:'+s.color+';top:'+(10+i*19)+'%">'+s.label+'</button>';});
+    host.innerHTML=html;
+    $$('.tab',host).forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation(); goId(SECTIONS[+b.getAttribute('data-sec')].id);});});
+  }
+  function renderTabRow(){
+    var html='';
+    SECTIONS.forEach(function(s,i){html+='<button type="button" data-sec="'+i+'">'+s.label+'</button>';});
+    tabrow.innerHTML=html;
+    $$('button',tabrow).forEach(function(b){b.addEventListener('click',function(){goId(SECTIONS[+b.getAttribute('data-sec')].id);});});
+  }
+  function updateTabs(pi){
+    var sc=pi<=0?-1:currentSection(pi);
+    $$('.tab',book).forEach(function(t,k){
+      var leaf=Math.floor(indexOfId(SECTIONS[k].id)/2);
+      t.classList.toggle('left',leaf<cur);
+      t.classList.toggle('cur',k===sc);
+    });
+    $$('button',tabrow).forEach(function(t,k){t.classList.toggle('cur',k===sc);});
+  }
+  function updateStacks(){
+    var n=leaves.length, open=cur>0&&cur<n;
+    var wl=open?Math.round(Math.min(13,3+cur*1.1)):0, wr=open?Math.round(Math.min(13,3+(n-cur)*1.1)):0;
+    book.style.setProperty('--sl',wl+'px'); book.style.setProperty('--sr',wr+'px');
+    $$('.stack,.boards',book).forEach(function(e){e.classList.toggle('on',open);});
+  }
+  function updateSpread(){
+    var n=leaves.length;
+    book.classList.toggle('at-start',cur===0);
+    book.classList.toggle('at-end',cur===n);
+    var li=cur>0?2*cur-1:-1, ri=cur<n?2*cur:-1;
+    var left=li>=0?sides[li]:null, right=ri>=0?sides[ri]:null;
+    var main=(right&&!right.blank)?ri:li;
+    posId=sides[Math.max(0,main)].id;
+    var t=(right&&!right.blank&&right.title)||(left&&left.title)||'';
+    if(left&&right&&left.title&&right.title&&left.title!==right.title&&!left.blank&&!right.blank&&cur>1) t=left.title+'  ·  '+right.title;
+    bLabel.textContent=t;
+    bPrev.disabled=cur===0; bNext.disabled=cur===n;
+    updateTabs(cur===0?0:main);
+    updateStacks();
+  }
+  function go(n){
+    if(LAY.mode!=='s') return;
+    n=Math.max(0,Math.min(leaves.length,n));
+    if(n===cur||busy) return;
+    busy=true;
+    var step=n>cur?1:-1, delay=0, order=0;
+    while(cur!==n){
+      var idx=step>0?cur:cur-1, lf=leaves[idx];
+      (function(lf,d,o){setTimeout(function(){lf.style.zIndex=1000+o; lf.classList.toggle('flipped',step>0);},d);})(lf,delay,order++);
+      cur+=step; delay+=reduce.matches?0:170;
+    }
+    updateSpread();
+    setTimeout(function(){setZ(); busy=false;},delay+(reduce.matches?0:920));
+  }
+  function singlePage(side){
+    var el=document.createElement('div');
+    el.className='sp';
+    el.innerHTML='<div class="pg k-'+side.kind+'">'+side.html+'</div>';
+    el.addEventListener('click',function(e){
+      var r=el.getBoundingClientRect();
+      if(e.clientX-r.left<r.width*.3) goSingle(sIdx-1); else goSingle(sIdx+1);
+    });
+    return el;
+  }
+  function updateSingle(){
+    var s=singles[sIdx]; posId=s.id;
+    bLabel.textContent=s.title||'';
+    bPrev.disabled=sIdx===0; bNext.disabled=sIdx===singles.length-1;
+    updateTabs(sIdx===0?0:sides.indexOf(s));
+  }
+  function goSingle(k){
+    k=Math.max(0,Math.min(singles.length-1,k));
+    if(k===sIdx||busy) return;
+    var old=book.querySelector('.sp'), nu=singlePage(singles[k]);
+    var fwd=k>sIdx; sIdx=k;
+    if(reduce.matches){old.remove(); book.insertBefore(nu,book.firstChild);}
+    else if(fwd){
+      busy=true; book.insertBefore(nu,old); old.classList.add('out');
+      setTimeout(function(){old.remove();busy=false;},500);
+    }else{
+      busy=true; book.insertBefore(nu,old.nextSibling); nu.classList.add('in');
+      setTimeout(function(){old.remove();nu.classList.remove('in');busy=false;},500);
+    }
+    bindGoto(nu); updateSingle();
+  }
+  function goId(id){
+    var i=indexOfId(id);
+    if(LAY.mode==='s') go(i===0?0:Math.floor((i+1)/2));
+    else{ for(var k=0;k<singles.length;k++){ if(singles[k].id===id){goSingle(k);break;} } }
+  }
+  bPrev.addEventListener('click',function(){ if(LAY.mode==='s') go(cur-1); else goSingle(sIdx-1); });
+  bNext.addEventListener('click',function(){ if(LAY.mode==='s') go(cur+1); else goSingle(sIdx+1); });
+
+  /* ---------- вырезки ---------- */
+  var cardsEl=$('#cards'), cLabel=$('#cLabel'), cardOrder=[], cardsBuilt=false, cardsKind='';
+  function seeded(seed){var s=seed; return function(){s=(s*16807)%2147483647; return s/2147483647;};}
+  function greek(n,rnd,minW){var s=''; for(var i=0;i<n;i++){var w=i===n-1?30+rnd()*40:(minW||82)+rnd()*(100-(minW||82)); s+='<span class="g" style="width:'+w.toFixed(0)+'%"></span>';} return s;}
+  function buildCards(){
+    var html='';
+    if(DATA.bio.length){
+      DATA.bio.forEach(function(c,i){
+        html+='<article class="card '+(i%3===1?'aged':'cut')+'" style="--rot:'+((i%2?1:-1)*(1+i))+'deg">'+
+          '<div class="c-meta"><span>'+esc(c.source||'')+'</span><span>'+esc(c.date||'')+'</span></div>'+
+          (c.title?'<h4 class="c-title">'+esc(c.title)+'</h4>':'')+
+          '<div class="c-text">'+(c.text||[]).map(function(p){return '<p>'+esc(p)+'</p>';}).join('')+'</div></article>';
+      });
+    }else if(APP.clipCanvases&&APP.clipCanvases.length){
+      var rots=['-1.5deg','2deg','-3deg'];
+      APP.clipCanvases.forEach(function(src,i){
+        html+='<article class="card imgcard" style="--rot:'+rots[i%3]+'" data-ci="'+i+'" aria-label="Вырезка"></article>';
+      });
+    }else{
+      var r=seeded(11);
+      html+='<article class="card cut" style="--rot:-1.5deg"><div class="c-meta"><span class="g m" style="width:34%"></span><span class="g m" style="width:20%"></span></div>'+
+        '<span class="g h" style="width:94%"></span><span class="g h" style="width:62%"></span>'+
+        '<div class="c-cols" style="margin-top:.9em"><div><div class="c-pic"></div>'+greek(7,r)+'</div><div>'+greek(14,r)+'</div></div></article>';
+      html+='<article class="card aged c-type" style="--rot:2deg"><div class="c-meta"><span class="g m" style="width:44%"></span><span class="g m" style="width:16%"></span></div>'+greek(16,r,70)+'</article>';
+      html+='<article class="card cut" style="--rot:-3deg;width:78%;justify-self:center"><div class="c-meta"><span class="g m" style="width:30%"></span><span class="g m" style="width:22%"></span></div>'+
+        '<span class="g h" style="width:88%"></span>'+greek(11,r)+'</article>';
+    }
+    cardsEl.innerHTML=html;
+    $$('[data-ci]',cardsEl).forEach(function(el){ el.appendChild(copyCanvas(APP.clipCanvases[+el.getAttribute('data-ci')])); });
+    cardsKind=APP.clipCanvases?'img':'html';
+    cardOrder=$$('.card',cardsEl);
+    cardOrder.forEach(function(c){c.addEventListener('click',function(){nextCard(1);});});
+    layCards(); cardsBuilt=true;
+  }
+  function layCards(){
+    var n=cardOrder.length;
+    cardOrder.forEach(function(c,i){
+      c.style.zIndex=n-i;
+      c.style.transform='rotate(var(--rot)) translate('+(i*1.4)+'%,'+(i*1.2)+'%)';
+    });
+    var top=cardOrder[0], all=$$('.card',cardsEl);
+    cLabel.textContent=(all.indexOf(top)+1)+' из '+n;
+  }
+  var cardBusy=false;
+  function nextCard(dir){
+    if(cardBusy||cardOrder.length<2) return;
+    if(dir>0){
+      var top=cardOrder[0];
+      if(reduce.matches){cardOrder.push(cardOrder.shift()); layCards(); return;}
+      cardBusy=true; top.classList.add('leaving');
+      setTimeout(function(){cardOrder.push(cardOrder.shift()); top.classList.remove('leaving'); layCards(); cardBusy=false;},420);
+    }else{
+      cardOrder.unshift(cardOrder.pop()); layCards();
+    }
+  }
+  $('#cPrev').addEventListener('click',function(){nextCard(-1);});
+  $('#cNext').addEventListener('click',function(){nextCard(1);});
+
+  /* ---------- удостоверение для запасной сцены ---------- */
+  var idv=$('#idv');
+  idv.innerHTML=
+    '<div class="id-right"><div class="lining">'+
+      '<div class="id-org">Бюро судебно-медицинской экспертизы<br>Санкт-Петербург</div>'+
+      '<div class="id-no">УДОСТОВЕРЕНИЕ № <span class="ul"></span></div>'+
+      '<dl class="id-dl"><dt>Фамилия</dt><dd>'+esc(DATA.name.last)+'</dd><dt>Имя, отчество</dt><dd>'+esc(DATA.name.first+' '+DATA.name.middle)+'</dd>'+
+      '<dt>Должность</dt><dd>судебно-медицинский эксперт танатологического отделения</dd></dl>'+
+      '<div class="id-small">Начальник бюро <span class="ul"></span><br>Действительно до <span class="ul"></span></div>'+
+    '</div></div>'+
+    '<div class="id-leaf">'+
+      '<div class="id-face"><span class="leather-art"><span class="leather"><span class="emb"></span><span class="word">УДОСТОВЕРЕНИЕ</span></span></span></div>'+
+      '<div class="id-face id-back"><div class="lining">'+
+        '<div class="img">'+photoBox()+'</div>'+stampSVG('idStampRing')+
+        '<div class="id-mp">М. П.</div>'+
+        '<div class="id-owner">Подпись владельца<span class="ul"></span><span class="scrawl" aria-hidden="true">ФВексель</span></div>'+
+      '</div></div>'+
+    '</div>';
+  idv.addEventListener('click',function(){
+    var open=idv.classList.toggle('open'); idv.classList.toggle('closed',!open);
+  });
+
+  /* ---------- открыть / закрыть предмет ---------- */
+  var viewer=$('#viewer'), vClose=$('#vClose'), lastObj=null, current=null;
+  function openViewer(name,trigger){
+    lastObj=trigger||null; current=name;
+    $$('.v-panel',viewer).forEach(function(p){p.classList.toggle('on',p.getAttribute('data-panel')===name);});
+    viewer.classList.add('open');
+    hideLabel(); APP.hidePrompt();
+    if(name==='atlas'){
+      ensureBook();
+      var closed=LAY.mode==='s'?cur===0:sIdx===0;
+      if(closed) setTimeout(function(){ if(current!=='atlas') return; if(LAY.mode==='s') go(1); else goSingle(1); },reduce.matches?0:520);
+    }
+    if(name==='clips' && (!cardsBuilt || (APP.clipCanvases && cardsKind!=='img' && !DATA.bio.length))) buildCards();
+    if(name==='id'){
+      idv.classList.add('closed'); idv.classList.remove('open');
+      setTimeout(function(){idv.classList.add('open'); idv.classList.remove('closed');},reduce.matches?0:350);
+    }
+    vClose.focus({preventScroll:true});
+  }
+  APP.open=openViewer;
+  function closeViewer(){
+    viewer.classList.remove('open'); current=null;
+    if(APP.onClose) APP.onClose();
+    if(lastObj) lastObj.focus({preventScroll:true});
+  }
+  $$('[data-open]').forEach(function(o){o.addEventListener('click',function(){openViewer(o.getAttribute('data-open'),o);});});
+  vClose.addEventListener('click',closeViewer);
+  viewer.addEventListener('click',function(e){ if(e.target===viewer||e.target.classList.contains('v-panel')) closeViewer(); });
+  document.addEventListener('keydown',function(e){
+    if(!current) return;
+    if(e.key==='Escape') closeViewer();
+    if(current==='atlas'&&(e.key==='ArrowRight'||e.key==='ArrowLeft')){
+      var d=e.key==='ArrowRight'?1:-1;
+      if(LAY.mode==='s') go(cur+d); else goSingle(sIdx+d);
+    }
+    if(current==='clips'&&(e.key==='ArrowRight'||e.key==='ArrowLeft')) nextCard(e.key==='ArrowRight'?1:-1);
+  });
+  var rt=null;
+  window.addEventListener('resize',function(){clearTimeout(rt); rt=setTimeout(function(){ if(current==='atlas') ensureBook(); else layoutKey=''; },180);});
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){ layoutKey=''; if(current==='atlas') ensureBook(true); });}
+
+  /* ---------- подпись у курсора (запасная сцена) ---------- */
+  var hl=$('#hoverlabel');
+  function hideLabel(){hl.classList.remove('on');}
+  if(canHover){
+    $$('.obj').forEach(function(o){
+      o.addEventListener('pointerenter',function(){hl.textContent=o.getAttribute('data-label'); hl.classList.add('on');});
+      o.addEventListener('pointermove',function(e){hl.style.transform='translate('+(e.clientX+16)+'px,'+(e.clientY+18)+'px)';});
+      o.addEventListener('pointerleave',hideLabel);
+    });
+  }
+})();
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var APP=window.APP||{};
+  function fallback(){ document.body.classList.add('no3d'); if(APP.lampOn) APP.lampOn(); }
+  if(!window.THREE||!APP.fontsReady){ fallback(); return; }
+  var renderer;
+  try{ renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'}); }catch(e){ fallback(); return; }
+  if(!renderer||!renderer.getContext()){ fallback(); return; }
+  document.body.classList.add('has3d');
+
+  var reduce=APP.reduce||{matches:false};
+  function $(s){return document.querySelector(s);}
+  function $$(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
+  var host=$('#scene3d'), hl=$('#hoverlabel');
+  var scene, camera, spot, hemi, fill, maxAniso=4, theme={spot:11};
+  var objs={}, pickables=[], LAY=null;
+  var mode='overview', active=null, hoverKey=null, paused=false;
+  var camPos=new THREE.Vector3(0,1,1), camTgt=new THREE.Vector3(), camPosT=new THREE.Vector3(0,1,1), camTgtT=new THREE.Vector3();
+  var par={x:0,y:0,tx:0,ty:0};
+  var idCover=null, idAngle=0, idAngleT=0;
+  var raycaster=new THREE.Raycaster(), pointer=new THREE.Vector2(), v3=new THREE.Vector3();
+  var LABELS={atlas:'Атлас анатомии',clips:'Вырезки',id:'Служебное удостоверение',tag:'Бирка'};
+
+  /* размеры, метры */
+  var TW=1.05, TL=2.6;
+  var BW=.235, BD=.32, BT=.046, BB=.0035;
+  var IW=.095, ID=.135, IT=.0032;
+  var GW=.056, GH=.112;
+
+  /* ---------------- утилиты ---------------- */
+  function rng(seed){var s=seed%2147483647; if(s<=0)s+=2147483646; return function(){s=s*16807%2147483647; return (s-1)/2147483646;};}
+  function mk(w,h){var c=document.createElement('canvas'); c.width=w; c.height=h; return c;}
+  function tex(c,srgb){var t=new THREE.CanvasTexture(c); t.anisotropy=maxAniso; if(srgb!==false) t.encoding=THREE.sRGBEncoding; return t;}
+  function col(hex){return new THREE.Color(hex).convertSRGBToLinear();}
+  function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
+  function spaced(g,text,cx,y,sp){
+    var ch=Array.from(text), ws=ch.map(function(c){return g.measureText(c).width;});
+    var tot=ws.reduce(function(a,b){return a+b;},0)+sp*(ch.length-1), x=cx-tot/2;
+    g.textAlign='left'; ch.forEach(function(c,i){g.fillText(c,x,y); x+=ws[i]+sp;});
+  }
+  function wrapText(g,text,x,y,maxW,lh,center){
+    var words=text.split(' '), line='';
+    for(var i=0;i<words.length;i++){
+      var test=line?line+' '+words[i]:words[i];
+      if(g.measureText(test).width>maxW && line){ g.fillText(line,x,y); y+=lh; line=words[i]; } else line=test;
+    }
+    if(line){ g.fillText(line,x,y); y+=lh; }
+    return y;
+  }
+  var NOISE=null;
+  function noiseTile(){
+    if(NOISE) return NOISE;
+    var c=mk(256,256), g=c.getContext('2d'), im=g.createImageData(256,256), d=im.data, r=rng(77);
+    for(var i=0;i<d.length;i+=4){ var v=r()*255; d[i]=d[i+1]=d[i+2]=v; d[i+3]=255; }
+    g.putImageData(im,0,0); NOISE=c; return c;
+  }
+  function grain(g,W,H,alpha,mode){
+    g.save(); g.globalAlpha=alpha; g.globalCompositeOperation=mode||'overlay';
+    g.fillStyle=g.createPattern(noiseTile(),'repeat'); g.fillRect(0,0,W,H); g.restore();
+  }
+  function edges(g,W,H,color,s){
+    var gr;
+    gr=g.createLinearGradient(0,0,s,0); gr.addColorStop(0,color); gr.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gr; g.fillRect(0,0,s,H);
+    gr=g.createLinearGradient(W,0,W-s,0); gr.addColorStop(0,color); gr.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gr; g.fillRect(W-s,0,s,H);
+    gr=g.createLinearGradient(0,0,0,s); gr.addColorStop(0,color); gr.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gr; g.fillRect(0,0,W,s);
+    gr=g.createLinearGradient(0,H,0,H-s); gr.addColorStop(0,color); gr.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=gr; g.fillRect(0,H-s,W,s);
+  }
+  function fibers(g,W,H,r,color,n){
+    g.save(); g.strokeStyle=color; g.lineWidth=1;
+    for(var i=0;i<n;i++){ var x=r()*W, y=r()*H, a=r()*6.3, l=6+r()*22; g.beginPath(); g.moveTo(x,y); g.quadraticCurveTo(x+Math.cos(a+1)*l*.5,y+Math.sin(a+1)*l*.5,x+Math.cos(a)*l,y+Math.sin(a)*l); g.stroke(); }
+    g.restore();
+  }
+  function spots(g,W,H,r,n){
+    for(var i=0;i<n;i++){ var x=r()*W, y=r()*H, s=4+r()*26, gr=g.createRadialGradient(x,y,0,x,y,s);
+      gr.addColorStop(0,'rgba(120,85,35,.16)'); gr.addColorStop(1,'rgba(120,85,35,0)'); g.fillStyle=gr; g.fillRect(x-s,y-s,2*s,2*s); }
+  }
+  function paperBase(g,W,H,color,r){
+    g.fillStyle=color; g.fillRect(0,0,W,H);
+    grain(g,W,H,.16,'overlay');
+    fibers(g,W,H,r,'rgba(90,70,40,.07)',260);
+    spots(g,W,H,r,10);
+    edges(g,W,H,'rgba(140,105,45,.16)',34);
+  }
+  function wordLine(g,x,y,w,h,r,full){
+    var cx=x, end=x+(full?w:w*(.35+r()*.5));
+    while(cx<end-10){ var ww=Math.min(end-cx,12+r()*56); rr(g,cx,y,ww,h,h/2.6); g.fill(); cx+=ww+6+r()*4; }
+  }
+  function textBlock(g,x,y0,w,y1,lh,h,r){
+    var y=y0, n=0;
+    while(y<y1){ var ind=(n===0||r()<.09)?16:0; wordLine(g,x+ind,y,w-ind,h,r,!(r()<.1)); y+=lh; n++; }
+  }
+  function drawPhoto(g,img,x,y,w,h){
+    g.save(); g.beginPath(); g.rect(x,y,w,h); g.clip();
+    if(img){
+      var s=Math.max(w/img.width,h/img.height), iw=img.width*s, ih=img.height*s;
+      g.drawImage(img,x+(w-iw)/2,y+(h-ih)/2,iw,ih);
+    }else{
+      var gr=g.createRadialGradient(x+w*.4,y+h*.3,10,x+w*.5,y+h*.5,Math.max(w,h)*.8);
+      gr.addColorStop(0,'#5d666c'); gr.addColorStop(1,'#1f2427'); g.fillStyle=gr; g.fillRect(x,y,w,h);
+      g.fillStyle='rgba(235,240,243,.45)'; g.font='italic '+Math.round(w*.09)+'px "PT Serif", serif'; g.textAlign='center'; g.fillText('фото',x+w/2,y+h/2);
+    }
+    g.restore();
+  }
+  function giltText(g,go,gb,text,cx,y,font,sp,r){
+    g.font=font; go.font=font; gb.font=font;
+    g.fillStyle='rgba(0,0,0,.35)'; spaced(g,text,cx,y+2,sp);
+    var L=mk(g.canvas.width,g.canvas.height), lg=L.getContext('2d'); lg.font=font;
+    var gr=lg.createLinearGradient(0,y-60,0,y+10); gr.addColorStop(0,'#f2e3a8'); gr.addColorStop(.5,'#d2b977'); gr.addColorStop(1,'#a58c55');
+    lg.fillStyle=gr; spaced(lg,text,cx,y,sp);
+    lg.globalCompositeOperation='destination-out';
+    for(var i=0;i<700;i++){ lg.globalAlpha=.15+r()*.5; lg.beginPath(); lg.arc(cx+(r()-.5)*g.canvas.width*.8,y-r()*80+10,.5+r()*1.8,0,6.3); lg.fill(); }
+    g.drawImage(L,0,0);
+    go.fillStyle='rgb(0,105,0)'; spaced(go,text,cx,y,sp);
+    gb.fillStyle='#727272'; spaced(gb,text,cx,y,sp);
+  }
+  function drawStamp(g,cx,cy,R,rot,r){
+    var S=Math.ceil(R*2+24), L=mk(S,S), l=L.getContext('2d'), c=S/2, ink='rgba(52,57,154,.9)';
+    l.strokeStyle=ink; l.fillStyle=ink;
+    l.lineWidth=R*.05; l.beginPath(); l.arc(c,c,R*.95,0,6.3); l.stroke();
+    l.lineWidth=R*.016; l.beginPath(); l.arc(c,c,R*.87,0,6.3); l.stroke(); l.beginPath(); l.arc(c,c,R*.58,0,6.3); l.stroke();
+    var ch=Array.from('БЮРО СУДЕБНО-МЕДИЦИНСКОЙ ЭКСПЕРТИЗЫ ✶ САНКТ-ПЕТЕРБУРГ ✶ '), n=ch.length;
+    l.font='700 '+Math.round(R*.12)+'px "PT Serif", serif'; l.textAlign='center'; l.textBaseline='middle';
+    for(var i=0;i<n;i++){ var a=-Math.PI/2+i*(Math.PI*2/n); l.save(); l.translate(c+Math.cos(a)*R*.73,c+Math.sin(a)*R*.73); l.rotate(a+Math.PI/2); l.fillText(ch[i],0,0); l.restore(); }
+    l.font='700 '+Math.round(R*.14)+'px "PT Serif", serif'; l.fillText('ДЛЯ',c,c-R*.11);
+    l.font='700 '+Math.round(R*.1)+'px "PT Serif", serif'; l.fillText('ДОКУМЕНТОВ',c,c+R*.1);
+    l.globalCompositeOperation='destination-out';
+    for(i=0;i<650;i++){ l.globalAlpha=.15+r()*.75; l.beginPath(); l.arc(r()*S,r()*S,.5+r()*2.4,0,6.3); l.fill(); }
+    g.save(); g.translate(cx,cy); g.rotate(rot); g.globalAlpha=.82; g.globalCompositeOperation='multiply'; g.drawImage(L,-c,-c); g.restore();
+  }
+  function jagged(W,H,r){
+    var p=[], m=6, C=[[m+r()*8,m+r()*8],[W-m-r()*8,m+r()*8],[W-m-r()*8,H-m-r()*8],[m+r()*8,H-m-r()*8]];
+    for(var e=0;e<4;e++){
+      var a=C[e], b=C[(e+1)%4], n=4+(r()*3|0);
+      for(var i=0;i<n;i++){
+        var t=i/n, px=a[0]+(b[0]-a[0])*t, py=a[1]+(b[1]-a[1])*t;
+        if(i>0){ var dx=b[0]-a[0], dy=b[1]-a[1], L=Math.hypot(dx,dy), j=(r()-.5)*9; px+=-dy/L*j; py+=dx/L*j; }
+        p.push([px,py]);
+      }
+    }
+    return p;
+  }
+  function halftone(g,x,y,w,h,r){
+    g.save(); g.beginPath(); g.rect(x,y,w,h); g.clip();
+    g.fillStyle='#b9b3a5'; g.fillRect(x,y,w,h);
+    g.fillStyle='rgba(28,25,20,.85)';
+    for(var yy=y;yy<y+h;yy+=7){ for(var xx=x;xx<x+w;xx+=7){
+      var u=(xx-x)/w, v=(yy-y)/h;
+      var d=.35+.25*Math.sin(u*5+1)*Math.cos(v*4)+.35*Math.exp(-((u-.45)*(u-.45)*9+(v-.42)*(v-.42)*5))+(r()-.5)*.12;
+      var rad=Math.max(0,Math.min(3.6,d*3.8)); if(rad<.3) continue;
+      g.beginPath(); g.arc(xx+3.5,yy+3.5,rad,0,6.3); g.fill();
+    } }
+    g.restore();
+  }
+
+  /* ---------------- текстуры ---------------- */
+  function steelCanvases(){
+    var W=1024,H=2048,r=rng(5),x,y,k;
+    var colv=new Float32Array(W), sm=new Float32Array(W);
+    for(x=0;x<W;x++) colv[x]=r()-.5;
+    for(x=0;x<W;x++){var s=0;for(k=-3;k<=3;k++) s+=colv[(x+k+W)%W]; sm[x]=s/7;}
+    var a=mk(W,H), b=mk(W,H), ga=a.getContext('2d'), gb=b.getContext('2d');
+    var ia=ga.createImageData(W,H), ib=gb.createImageData(W,H), da=ia.data, db=ib.data;
+    for(y=0;y<H;y++){
+      var rw=Math.sin(y*.004)*.012+Math.sin(y*.0011+1)*.015;
+      for(x=0;x<W;x++){
+        var n=r()-.5, i=(y*W+x)*4;
+        var v=(.82+sm[x]*.09+colv[x]*.03+n*.02+rw*.6)*255;
+        da[i]=v*.97; da[i+1]=v; da[i+2]=v*1.03; da[i+3]=255;
+        var q=(.55+sm[x]*.2+n*.05)*255; db[i]=db[i+1]=db[i+2]=q; db[i+3]=255;
+      }
+    }
+    ga.putImageData(ia,0,0); gb.putImageData(ib,0,0);
+    gb.globalAlpha=.03; gb.strokeStyle='#000'; gb.lineCap='round';
+    for(k=0;k<30;k++){ gb.lineWidth=40+r()*90; gb.beginPath(); gb.arc(r()*W,r()*H,120+r()*420,r()*6.3,r()*6.3+1.2+r()); gb.stroke(); }
+    gb.globalAlpha=1;
+    ga.globalAlpha=.018; ga.strokeStyle='#fff'; ga.lineCap='round';
+    for(k=0;k<14;k++){ ga.lineWidth=30+r()*60; ga.beginPath(); ga.arc(r()*W,r()*H,140+r()*380,r()*6.3,r()*6.3+1+r()); ga.stroke(); }
+    ga.globalAlpha=1;
+    [.06,.94].forEach(function(fx){
+      var cx=fx*W;
+      ga.fillStyle='rgba(0,0,0,.2)'; ga.fillRect(cx-15,0,30,H);
+      ga.fillStyle='rgba(255,255,255,.12)'; ga.fillRect(cx-15,0,2,H); ga.fillRect(cx+13,0,2,H);
+      gb.fillStyle='rgba(255,255,255,.25)'; gb.fillRect(cx-15,0,30,H);
+      for(y=40;y<H;y+=96){
+        ga.fillStyle='#030404'; ga.beginPath(); ga.ellipse(cx,y,7.5,6.6,0,0,Math.PI*2); ga.fill();
+        ga.strokeStyle='rgba(255,255,255,.4)'; ga.lineWidth=1.6; ga.beginPath(); ga.ellipse(cx,y,9,8,0,Math.PI*.95,Math.PI*1.85); ga.stroke();
+        gb.fillStyle='#fff'; gb.beginPath(); gb.ellipse(cx,y,8,7,0,0,Math.PI*2); gb.fill();
+      }
+    });
+    return {map:a,rough:b};
+  }
+  function coverCanvases(back){
+    var W=1024,H=1400,r=rng(back?13:3),x,y;
+    var map=mk(W,H), g=map.getContext('2d'), im=g.createImageData(W,H), d=im.data;
+    var bump=mk(W,H), gb=bump.getContext('2d'), ib=gb.createImageData(W,H), db=ib.data;
+    for(y=0;y<H;y++) for(x=0;x<W;x++){
+      var i=(y*W+x)*4, wv=(((x>>1)+(y>>1))&1)?1:-1, wv2=((((x>>1)-(y>>1))&3)===0)?1:0, n=r()-.5;
+      var v=1+wv*.025+wv2*.03+n*.045;
+      d[i]=56*v; d[i+1]=71*v; d[i+2]=62*v; d[i+3]=255;
+      db[i]=db[i+1]=db[i+2]=128; db[i+3]=255;
+    }
+    g.putImageData(im,0,0); gb.putImageData(ib,0,0);
+    edges(g,W,H,'rgba(190,205,185,.11)',24);
+    for(var k=0;k<4;k++){ var cx0=k%2?W:0, cy0=k>1?H:0, gr=g.createRadialGradient(cx0,cy0,0,cx0,cy0,90); gr.addColorStop(0,'rgba(200,210,190,.2)'); gr.addColorStop(1,'rgba(200,210,190,0)'); g.fillStyle=gr; g.fillRect(cx0-90,cy0-90,180,180); }
+    var sg=g.createLinearGradient(0,0,W*.1,0); sg.addColorStop(0,'rgba(0,0,0,.35)'); sg.addColorStop(.7,'rgba(255,255,255,.04)'); sg.addColorStop(1,'rgba(0,0,0,.1)');
+    g.fillStyle=sg; g.fillRect(0,0,W*.1,H);
+    g.fillStyle='rgba(0,0,0,.42)'; g.fillRect(W*.1,0,7,H); g.fillStyle='rgba(255,255,255,.07)'; g.fillRect(W*.1+7,0,3,H);
+    gb.fillStyle='#303030'; gb.fillRect(W*.1,0,10,H);
+    var orm=mk(W,H), go=orm.getContext('2d'); go.fillStyle='rgb(0,222,0)'; go.fillRect(0,0,W,H);
+    if(!back){
+      var fx=W*.19, fy=H*.075, fw=W*.72, fh=H*.85, cx=fx+fw/2;
+      g.strokeStyle='rgba(0,0,0,.45)'; g.lineWidth=7; g.strokeRect(fx+2,fy+3,fw,fh);
+      g.strokeStyle='rgba(255,255,255,.07)'; g.lineWidth=3; g.strokeRect(fx-2,fy-2,fw,fh);
+      gb.strokeStyle='#5a5a5a'; gb.lineWidth=9; gb.strokeRect(fx,fy,fw,fh);
+      var big='700 76px "PT Serif", "Times New Roman", serif';
+      giltText(g,go,gb,'АТЛАС',cx,H*.31,big,10,r);
+      giltText(g,go,gb,'АНАТОМИИ',cx,H*.31+108,big,10,r);
+      giltText(g,go,gb,'ЧЕЛОВЕКА',cx,H*.31+216,big,10,r);
+      g.fillStyle='#b39b5e'; g.fillRect(cx-110,H*.53,220,5); go.fillStyle='rgb(0,105,0)'; go.fillRect(cx-110,H*.53,220,5); gb.fillStyle='#727272'; gb.fillRect(cx-110,H*.53,220,5);
+      giltText(g,go,gb,'Anatomia humana',cx,H*.6,'italic 500 66px "Cormorant Garamond", "Times New Roman", serif',2,r);
+      giltText(g,go,gb,'ТОМ I',cx,H*.75,'700 42px "PT Serif", serif',16,r);
+    }
+    return {map:map,orm:orm,bump:bump};
+  }
+  function pageEdgeCanvas(){
+    var W=512,H=96,c=mk(W,H),g=c.getContext('2d'),r=rng(21);
+    for(var y=0;y<H;y++){ var v=206+r()*36; g.fillStyle='rgb('+(v|0)+','+((v-9)|0)+','+((v-28)|0)+')'; g.fillRect(0,y,W,1); }
+    var gr=g.createLinearGradient(0,0,W,0); gr.addColorStop(0,'rgba(90,70,40,.22)'); gr.addColorStop(.08,'rgba(90,70,40,0)'); gr.addColorStop(.92,'rgba(90,70,40,0)'); gr.addColorStop(1,'rgba(90,70,40,.22)');
+    g.fillStyle=gr; g.fillRect(0,0,W,H);
+    return c;
+  }
+  function photoCanvas(img){
+    var W=600,H=780,c=mk(W,H),g=c.getContext('2d');
+    g.fillStyle='#f3f2ec'; g.fillRect(0,0,W,H); grain(g,W,H,.05,'multiply');
+    drawPhoto(g,img,W*.06,W*.06,W*.88,H-W*.12);
+    return c;
+  }
+  function newsCanvas(v){
+    var W=900,H=v===1?1140:1100,c=mk(W,H),g=c.getContext('2d'),r=rng(30+v*7);
+    g.save(); var p=jagged(W,H,r); g.beginPath(); p.forEach(function(q,i){ if(i) g.lineTo(q[0],q[1]); else g.moveTo(q[0],q[1]); }); g.closePath(); g.clip();
+    paperBase(g,W,H,'#e6dfca',r);
+    var ink='rgba(32,28,22,', m=W*.075, cw=W-2*m;
+    g.fillStyle=ink+'.5)'; wordLine(g,m,H*.04,cw*.36,10,r,true); wordLine(g,W-m-cw*.18,H*.04,cw*.18,10,r,true);
+    g.fillStyle=ink+'.75)'; g.fillRect(m,H*.068,cw,3); g.fillRect(m,H*.075,cw,1);
+    g.fillStyle=ink+'.86)'; wordLine(g,m,H*.1,cw*.97,34,r,true); wordLine(g,m,H*.1+48,cw*.6,34,r,true);
+    g.fillStyle=ink+'.6)'; wordLine(g,m,H*.1+104,cw*.78,13,r,true);
+    var top=H*.1+140, gap=34;
+    if(v===1){
+      var cw2=(cw-gap)/2, ph=cw2*.72;
+      halftone(g,m,top,cw2,ph,r);
+      g.fillStyle=ink+'.5)'; wordLine(g,m,top+ph+12,cw2*.7,8,r,true);
+      g.fillStyle=ink+'.56)'; textBlock(g,m,top+ph+40,cw2,H*.95,22,9,r); textBlock(g,m+cw2+gap,top,cw2,H*.95,22,9,r);
+      g.fillStyle=ink+'.25)'; g.fillRect(m+cw2+gap/2-1,top,1.5,H*.95-top);
+    }else{
+      var c3=(cw-2*gap)/3; g.fillStyle=ink+'.56)';
+      for(var k=0;k<3;k++) textBlock(g,m+k*(c3+gap),top,c3,H*.95,22,9,r);
+    }
+    g.restore();
+    return c;
+  }
+  function typedCanvas(){
+    var W=900,H=1200,c=mk(W,H),g=c.getContext('2d'),r=rng(52);
+    paperBase(g,W,H,'#dacdaa',r);
+    var ink='rgba(38,34,46,', m=W*.1, cw=W-2*m;
+    g.fillStyle=ink+'.62)'; wordLine(g,W*.3,H*.07,W*.4,11,r,true); wordLine(g,W*.36,H*.07+26,W*.28,11,r,true);
+    g.fillStyle=ink+'.5)'; textBlock(g,m,H*.15,cw,H*.9,30,8,r);
+    var fy=H*.5, gr=g.createLinearGradient(0,fy-16,0,fy+16);
+    gr.addColorStop(0,'rgba(0,0,0,0)'); gr.addColorStop(.48,'rgba(60,45,20,.18)'); gr.addColorStop(.52,'rgba(255,255,255,.28)'); gr.addColorStop(1,'rgba(0,0,0,0)');
+    g.fillStyle=gr; g.fillRect(0,fy-16,W,32);
+    return c;
+  }
+  function leatherCanvases(){
+    var W=760,H=1080,r=rng(41);
+    var map=mk(W,H), g=map.getContext('2d'), bump=mk(W,H), gb=bump.getContext('2d'), orm=mk(W,H), go=orm.getContext('2d');
+    var sm=mk(W/8|0,H/8|0), sg=sm.getContext('2d'), si=sg.createImageData(sm.width,sm.height);
+    for(var i=0;i<si.data.length;i+=4){ var v=r()*255; si.data[i]=si.data[i+1]=si.data[i+2]=v; si.data[i+3]=255; }
+    sg.putImageData(si,0,0);
+    gb.imageSmoothingEnabled=true; gb.drawImage(sm,0,0,W,H);
+    g.fillStyle='#7a2925'; g.fillRect(0,0,W,H);
+    g.save(); g.globalAlpha=.14; g.globalCompositeOperation='multiply'; g.drawImage(bump,0,0); g.restore();
+    grain(g,W,H,.025,'overlay');
+    edges(g,W,H,'rgba(0,0,0,.4)',50);
+    go.fillStyle='rgb(0,130,0)'; go.fillRect(0,0,W,H);
+    rr(g,W*.08+2,H*.06+3,W*.84,H*.88,30); g.strokeStyle='rgba(0,0,0,.5)'; g.lineWidth=7; g.stroke();
+    rr(g,W*.08-1,H*.06-1,W*.84,H*.88,30); g.strokeStyle='rgba(255,220,200,.07)'; g.lineWidth=3; g.stroke();
+    rr(gb,W*.08,H*.06,W*.84,H*.88,30); gb.strokeStyle='#202020'; gb.lineWidth=9; gb.stroke();
+    giltText(g,go,gb,'УДОСТОВЕРЕНИЕ',W/2,H*.5,'700 50px "PT Serif", "Times New Roman", serif',5,r);
+    return {map:map,bump:bump,orm:orm};
+  }
+  function lining(g,W,H,r){
+    g.fillStyle='#5a1c1c'; g.fillRect(0,0,W,H); grain(g,W,H,.1,'overlay');
+    var m=W*.045;
+    g.fillStyle='#ebe5d8'; g.fillRect(m,m,W-2*m,H-2*m);
+    g.save(); g.beginPath(); g.rect(m,m,W-2*m,H-2*m); g.clip(); g.lineWidth=1;
+    for(var k=0;k<52;k++){ g.strokeStyle=k%2?'rgba(150,70,70,.11)':'rgba(70,90,150,.10)'; g.beginPath();
+      for(var x=m;x<=W-m;x+=6){ var y=m+k*((H-2*m)/52)+Math.sin(x*.025+k*.5)*14+Math.sin(x*.007+k)*10; if(x===m) g.moveTo(x,y); else g.lineTo(x,y); }
+      g.stroke(); }
+    grain(g,W,H,.06,'multiply');
+    g.restore();
+    g.strokeStyle='rgba(0,0,0,.35)'; g.lineWidth=3; g.strokeRect(m,m,W-2*m,H-2*m);
+    return m;
+  }
+  function uline(g,x,y,w){ g.save(); g.strokeStyle='rgba(43,37,34,.75)'; g.lineWidth=2; g.beginPath(); g.moveTo(x,y); g.lineTo(x+w,y); g.stroke(); g.restore(); }
+  function idRightCanvas(){
+    var W=760,H=1080,c=mk(W,H),g=c.getContext('2d'),r=rng(43);
+    var m=lining(g,W,H,r), x0=W*.13, y;
+    g.fillStyle='#2b2522'; g.textAlign='center';
+    g.font='700 30px "PT Serif", serif'; y=wrapText(g,'БЮРО СУДЕБНО-МЕДИЦИНСКОЙ ЭКСПЕРТИЗЫ',W/2,H*.12,W*.74,40,true);
+    g.font='700 26px "PT Serif", serif'; g.fillText('САНКТ-ПЕТЕРБУРГ',W/2,y+4);
+    g.font='700 42px "PT Serif", serif'; g.fillText('УДОСТОВЕРЕНИЕ №',W/2-50,H*.33); uline(g,W/2+176,H*.33+4,90);
+    function field(label,val,yy){
+      g.textAlign='left'; g.fillStyle='#6a605a'; g.font='italic 26px "PT Serif", serif'; g.fillText(label,x0,yy);
+      g.fillStyle='#211b19'; g.font='700 36px "PT Serif", serif'; var ny=wrapText(g,val,x0,yy+44,W-2*x0,44);
+      uline(g,x0,ny-30,W-2*x0); return ny+18;
+    }
+    y=field('Фамилия',DATA.name.last,H*.43);
+    y=field('Имя, отчество',DATA.name.first+' '+DATA.name.middle,y);
+    y=field('Должность','судебно-медицинский эксперт танатологического отделения',y);
+    g.textAlign='left'; g.fillStyle='#2b2522'; g.font='28px "PT Serif", serif';
+    g.fillText('Начальник бюро',x0,H*.86); uline(g,x0+220,H*.86+4,W-2*x0-220);
+    g.fillText('Действительно до',x0,H*.92); uline(g,x0+240,H*.92+4,W-2*x0-240);
+    return c;
+  }
+  function idLeftCanvas(img){
+    var W=760,H=1080,c=mk(W,H),g=c.getContext('2d'),r=rng(44);
+    lining(g,W,H,r);
+    var pw=W*.38, ph=pw*4/3, px=(W-pw)/2, py=H*.12;
+    g.fillStyle='rgba(0,0,0,.25)'; g.fillRect(px+3,py+4,pw,ph);
+    drawPhoto(g,img,px,py,pw,ph);
+    drawStamp(g,px+pw*.92,py+ph*.86,W*.17,-.28,r);
+    g.fillStyle='#6a605a'; g.font='26px "PT Serif", serif'; g.textAlign='center'; g.fillText('М. П.',W/2,py+ph+80);
+    g.textAlign='left'; g.fillStyle='#2b2522'; g.font='28px "PT Serif", serif';
+    var sy=H*.82; g.fillText('Подпись владельца',W*.13,sy); uline(g,W*.13+250,sy+4,W*.74-250);
+    g.fillStyle='#1e2a58'; g.font='64px "Marck Script", "Segoe Script", cursive';
+    g.save(); g.translate(W*.13+270,sy-6); g.rotate(-.12); g.fillText('ФВексель',0,0); g.restore();
+    return c;
+  }
+  function tagCanvas(){
+    var W=560,H=1120,c=mk(W,H),g=c.getContext('2d'),r=rng(61);
+    g.fillStyle='#ccb98f'; g.fillRect(0,0,W,H); grain(g,W,H,.2,'overlay');
+    fibers(g,W,H,r,'rgba(80,60,30,.09)',420);
+    edges(g,W,H,'rgba(90,70,40,.2)',26);
+    var hx=W/2, hy=(.0135/GH)*H;
+    g.fillStyle='#b69b66'; g.beginPath(); g.arc(hx,hy,(.0074/GW)*W,0,6.3); g.fill();
+    g.strokeStyle='rgba(60,40,15,.4)'; g.lineWidth=2; g.stroke();
+    var y=H*.24, x0=W*.1, x1=W*.9;
+    function field(label,val,big){
+      g.strokeStyle='rgba(40,30,15,.5)'; g.lineWidth=2; g.beginPath(); g.moveTo(x0,y); g.lineTo(x1,y); g.stroke();
+      g.fillStyle='rgba(40,30,15,.75)'; g.font='400 26px "PT Serif", serif'; g.textAlign='left'; g.fillText(label,x0,y+32);
+      g.fillStyle='#1e2a58'; g.font=(big?'96px':'56px')+' "Marck Script", "Segoe Script", cursive'; g.fillText(val||'',x0+4,y+(big?124:96));
+      y+=big?168:136;
+    }
+    field('№','0',true);
+    field('фамилия, имя, отчество',APP.shortName);
+    field('возраст',DATA.age||'');
+    field('отделение','танатол.');
+    g.strokeStyle='rgba(40,30,15,.5)'; g.lineWidth=2; g.beginPath(); g.moveTo(x0,y); g.lineTo(x1,y); g.stroke();
+    return c;
+  }
+  function rulerCanvas(h){
+    var W=h?1500:220, H=h?220:1000, c=mk(W,H), g=c.getContext('2d');
+    g.fillStyle='#ecebe5'; g.fillRect(0,0,W,H); grain(g,W,H,.06,'multiply');
+    g.fillStyle='#111'; g.strokeStyle='#111'; g.lineWidth=2.4; g.font='600 34px Arial, sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+    var n=h?150:100;
+    for(var i=0;i<=n;i++){
+      var p=i*10, L=i%10===0?62:(i%5===0?42:26);
+      if(h){ g.beginPath(); g.moveTo(p,0); g.lineTo(p,L); g.stroke(); if(i%10===0&&i>0&&i<n) g.fillText(i/10,p,98); }
+      else { g.beginPath(); g.moveTo(0,p); g.lineTo(L,p); g.stroke(); if(i%10===0&&i>0&&i<n) g.fillText((i/10+2)+'',110,p); }
+    }
+    if(h){ ['#111','#555','#999','#ddd'].forEach(function(cl,k){ g.fillStyle=cl; g.fillRect(W-260+k*58,140,50,50); }); g.lineWidth=1.5; g.strokeRect(W-260+3*58,140,50,50); }
+    return c;
+  }
+
+  /* ---------------- сцена ---------------- */
+  function register(key,group,size,pick){
+    var o={g:group,size:size,c:{x:0,y:0,z:0,ry:0,rx:0},t:{x:0,y:0,z:0,ry:0,rx:0},base:{x:0,z:0,ry:0},lift:0,liftT:0};
+    objs[key]=o;
+    group.traverse(function(m){ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; if(pick!==false){ m.userData.key=key; pickables.push(m); } } });
+    scene.add(group);
+  }
+  function buildEnv(){
+    var es=new THREE.Scene();
+    var room=new THREE.Mesh(new THREE.BoxGeometry(10,5,10),new THREE.MeshBasicMaterial({color:0x14181c,side:THREE.BackSide}));
+    room.position.y=2; es.add(room);
+    function panel(w,h,x,y,z,rx,ry,c){ var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,side:THREE.DoubleSide})); m.position.set(x,y,z); m.rotation.set(rx,ry,0); es.add(m); }
+    var hot=new THREE.Color(0xe9f2ff).multiplyScalar(3.2), soft=new THREE.Color(0xdfe8f2).multiplyScalar(.7);
+    panel(1.6,.32,0,3.4,-.2,Math.PI/2,0,hot);
+    panel(1.6,.32,0,3.4,1.5,Math.PI/2,0,hot.clone().multiplyScalar(.45));
+    panel(2.5,1.4,-4.9,1.6,0,0,Math.PI/2,soft);
+    panel(2.5,1.4,4.9,1.4,-1,0,-Math.PI/2,soft.clone().multiplyScalar(.6));
+    var pm=new THREE.PMREMGenerator(renderer);
+    scene.environment=pm.fromScene(es,.03).texture; pm.dispose();
+  }
+  function buildRoom(){
+    var c=mk(512,512), g=c.getContext('2d');
+    g.fillStyle='#2b3034'; g.fillRect(0,0,512,512); grain(g,512,512,.25); g.strokeStyle='rgba(0,0,0,.6)'; g.lineWidth=6; g.strokeRect(0,0,512,512);
+    var t=tex(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(12,12);
+    var floor=new THREE.Mesh(new THREE.PlaneGeometry(8,8),new THREE.MeshStandardMaterial({map:t,roughness:.5,metalness:0}));
+    floor.rotation.x=-Math.PI/2; floor.position.y=-.86; floor.receiveShadow=true; scene.add(floor);
+  }
+  function buildTable(){
+    var sc=steelCanvases();
+    var mat=new THREE.MeshStandardMaterial({map:tex(sc.map),roughnessMap:tex(sc.rough,false),roughness:.95,metalness:.88,color:col(0xa9b0b4)});
+    var top=new THREE.Mesh(new THREE.BoxGeometry(TW,.03,TL),mat); top.position.y=-.015; top.receiveShadow=true; scene.add(top);
+    var rimMat=new THREE.MeshStandardMaterial({color:col(0xc6cdd1),roughness:.3,metalness:.95});
+    [-1,1].forEach(function(s){
+      var rim=new THREE.Mesh(new THREE.BoxGeometry(.03,.024,TL),rimMat); rim.position.set(s*(TW/2-.015),.012,0); rim.castShadow=true; rim.receiveShadow=true; scene.add(rim);
+      var lip=new THREE.Mesh(new THREE.CylinderGeometry(.008,.008,TL,20),rimMat); lip.rotation.x=Math.PI/2; lip.position.set(s*(TW/2-.015),.024,0); lip.castShadow=true; scene.add(lip);
+    });
+    var apron=new THREE.Mesh(new THREE.BoxGeometry(TW+.01,.12,TL),new THREE.MeshStandardMaterial({color:col(0x8d959a),roughness:.4,metalness:.9}));
+    apron.position.y=-.09; scene.add(apron);
+  }
+  function buildLights(){
+    spot=new THREE.SpotLight(0xe6f0ff,10,0,.8,.85,2);
+    spot.position.set(.14,1.35,-.34); spot.target.position.set(0,0,.05);
+    spot.castShadow=true; spot.shadow.mapSize.set(2048,2048); spot.shadow.bias=-.00012; spot.shadow.normalBias=.01;
+    spot.shadow.camera.near=.4; spot.shadow.camera.far=3;
+    scene.add(spot,spot.target);
+    hemi=new THREE.HemisphereLight(0xa8bccd,0x0a0c0e,.2); scene.add(hemi);
+    fill=new THREE.DirectionalLight(0x9fb0c2,.2); fill.position.set(-.6,.8,1.2); scene.add(fill);
+  }
+  function buildAtlas(img){
+    var g=new THREE.Group();
+    var cv=coverCanvases(false), bk=coverCanvases(true);
+    APP.coverCanvas=cv.map; APP.backCanvas=bk.map;
+    var coverMat=new THREE.MeshStandardMaterial({map:tex(cv.map),roughnessMap:tex(cv.orm,false),roughness:1,metalness:0});
+    var backMat=new THREE.MeshStandardMaterial({map:tex(bk.map),roughness:.88,metalness:0});
+    var cloth=new THREE.MeshStandardMaterial({color:col(0x36443c),roughness:.9,metalness:0});
+    var clothDS=cloth.clone(); clothDS.side=THREE.DoubleSide;
+    var pageSide=new THREE.MeshStandardMaterial({map:tex(pageEdgeCanvas()),roughness:.95});
+    var pageFlat=new THREE.MeshStandardMaterial({color:col(0xe5dabf),roughness:.95});
+    var top=new THREE.Mesh(new THREE.BoxGeometry(BW,BB,BD),[cloth,cloth,coverMat,cloth,cloth,cloth]); top.position.y=BT-BB/2;
+    var bot=new THREE.Mesh(new THREE.BoxGeometry(BW,BB,BD),[cloth,cloth,cloth,backMat,cloth,cloth]); bot.position.y=BB/2;
+    var block=new THREE.Mesh(new THREE.BoxGeometry(BW-.009,BT-2*BB,BD-.01),[pageSide,pageSide,pageFlat,pageFlat,pageSide,pageSide]); block.position.set(.0035,BT/2,0);
+    var spine=new THREE.Mesh(new THREE.CylinderGeometry(BT/2,BT/2,BD,28,1,true,Math.PI,Math.PI),clothDS); spine.rotation.x=Math.PI/2; spine.position.set(-BW/2+.004,BT/2,0);
+    var white=new THREE.MeshStandardMaterial({color:col(0xf1efe8),roughness:.6});
+    var photoMat=new THREE.MeshStandardMaterial({map:tex(photoCanvas(img)),roughness:.35});
+    var ph=new THREE.Mesh(new THREE.BoxGeometry(.068,.0007,.088),[white,white,photoMat,white,white,white]); ph.position.set(BW/2-.012,BT*.58,.035); ph.rotation.y=-.14;
+    var sheets=new THREE.Mesh(new THREE.BoxGeometry(.16,.0012,.2),new THREE.MeshStandardMaterial({color:col(0xedefec),roughness:.9})); sheets.position.set(BW/2-.075,BT*.42,-.035); sheets.rotation.y=.05;
+    var ribMat=new THREE.MeshStandardMaterial({color:col(0x5e1a1a),roughness:.45});
+    var rib1=new THREE.Mesh(new THREE.BoxGeometry(.007,.0005,.032),ribMat); rib1.position.set(.045,BT*.26,BD/2+.002); rib1.rotation.x=.85;
+    var rib2=new THREE.Mesh(new THREE.BoxGeometry(.007,.0005,.034),ribMat); rib2.position.set(.047,.0004,BD/2+.03); rib2.rotation.y=-.12;
+    g.add(top,bot,block,spine,ph,sheets,rib1,rib2);
+    register('atlas',g,{w:BW+.025,d:BD+.03});
+  }
+  function paper(canvas,w,d,curl,seed){
+    var t=tex(canvas);
+    var mat=new THREE.MeshStandardMaterial({map:t,roughness:.93,metalness:0,side:THREE.DoubleSide,alphaTest:.5});
+    var geo=new THREE.PlaneGeometry(w,d,22,28); geo.rotateX(-Math.PI/2);
+    var p=geo.attributes.position, r=rng(seed), ph=r()*6;
+    for(var i=0;i<p.count;i++){
+      var x=p.getX(i), z=p.getZ(i);
+      var ex=Math.max(0,Math.abs(x)/(w/2)-.55)/.45, ez=Math.max(0,Math.abs(z)/(d/2)-.6)/.4;
+      p.setY(i,curl*(ex*ex*.8+ez*ez*.5+ex*ez*.6)+curl*.12*(1+Math.sin(x*55+ph)*Math.sin(z*41+ph)));
+    }
+    geo.computeVertexNormals();
+    var m=new THREE.Mesh(geo,mat);
+    m.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:t,alphaTest:.5});
+    return m;
+  }
+  function buildClips(){
+    var g=new THREE.Group();
+    var c1=newsCanvas(1), c2=typedCanvas(), c3=newsCanvas(2);
+    APP.clipCanvases=[c1,c2,c3];
+    var p3=paper(c3,.2,.244,.0012,5); p3.position.set(.014,.0004,-.012); p3.rotation.y=.13;
+    var p2=paper(c2,.198,.264,.0016,7); p2.position.set(-.01,.0012,.008); p2.rotation.y=-.09;
+    var p1=paper(c1,.17,.215,.0026,3); p1.position.set(.004,.0021,.004); p1.rotation.y=.035;
+    g.add(p3,p2,p1);
+    register('clips',g,{w:.23,d:.29});
+  }
+  function buildID(img){
+    var lc=leatherCanvases();
+    var plain=new THREE.MeshStandardMaterial({color:col(0x6a2320),roughness:.55});
+    var outer=new THREE.MeshStandardMaterial({map:tex(lc.map),roughnessMap:tex(lc.orm,false),metalnessMap:tex(lc.orm,false),roughness:1,metalness:1});
+    var right=new THREE.MeshStandardMaterial({map:tex(idRightCanvas()),roughness:.85});
+    var leftT=tex(idLeftCanvas(img));
+    leftT.wrapS=leftT.wrapT=THREE.RepeatWrapping; leftT.repeat.set(-1,-1); leftT.offset.set(1,1);
+    var left=new THREE.MeshStandardMaterial({map:leftT,roughness:.85});
+    var g=new THREE.Group();
+    var base=new THREE.Mesh(new THREE.BoxGeometry(IW,IT,ID),[plain,plain,right,plain,plain,plain]); base.position.y=IT/2;
+    var pivot=new THREE.Group(); pivot.position.set(-IW/2,IT+.0002,0);
+    var cover=new THREE.Mesh(new THREE.BoxGeometry(IW,IT,ID),[plain,plain,outer,left,plain,plain]); cover.position.set(IW/2,IT/2,0);
+    pivot.add(cover); g.add(base,pivot); idCover=pivot;
+    register('id',g,{w:IW,d:ID});
+  }
+  function buildTag(){
+    var s=new THREE.Shape(), c=.013;
+    s.moveTo(0,0); s.lineTo(GW,0); s.lineTo(GW,GH-c); s.lineTo(GW-c,GH); s.lineTo(c,GH); s.lineTo(0,GH-c); s.lineTo(0,0);
+    var hole=new THREE.Path(); hole.absarc(GW/2,GH-.0135,.0033,0,Math.PI*2,true); s.holes.push(hole);
+    var geo=new THREE.ExtrudeGeometry(s,{depth:.0005,bevelEnabled:false,curveSegments:28});
+    geo.translate(-GW/2,-GH/2,0); geo.rotateX(-Math.PI/2);
+    var t=tex(tagCanvas()); t.repeat.set(1/GW,1/GH);
+    var tag=new THREE.Mesh(geo,[new THREE.MeshStandardMaterial({map:t,roughness:.9}),new THREE.MeshStandardMaterial({color:col(0xb9a77f),roughness:.9})]);
+    var hz=-(GH/2-.0135);
+    var curve=new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0,.0007,hz),new THREE.Vector3(.003,.0034,hz-.008),new THREE.Vector3(.011,.0022,hz-.024),
+      new THREE.Vector3(.02,.0011,hz-.05),new THREE.Vector3(.014,.001,hz-.078),new THREE.Vector3(-.008,.001,hz-.094),new THREE.Vector3(-.032,.001,hz-.09)]);
+    var str=new THREE.Mesh(new THREE.TubeGeometry(curve,90,.00065,6,false),new THREE.MeshStandardMaterial({color:col(0xe9e4d6),roughness:1}));
+    var g=new THREE.Group(); g.add(tag,str);
+    register('tag',g,{w:GW,d:GH});
+  }
+  function buildScalpel(){
+    var hs=new THREE.Shape();
+    hs.moveTo(0,-.0045); hs.lineTo(.105,-.0042); hs.quadraticCurveTo(.112,-.004,.118,-.0025); hs.lineTo(.128,-.0012);
+    hs.lineTo(.128,.0012); hs.lineTo(.118,.0025); hs.quadraticCurveTo(.112,.004,.105,.0042); hs.lineTo(0,.0045); hs.quadraticCurveTo(-.004,0,0,-.0045);
+    var bs=new THREE.Shape();
+    bs.moveTo(.126,.0011); bs.lineTo(.15,.0016); bs.quadraticCurveTo(.163,.0016,.17,.0003); bs.quadraticCurveTo(.16,-.004,.14,-.0042); bs.lineTo(.126,-.0011);
+    var hg=new THREE.ExtrudeGeometry(hs,{depth:.0022,bevelEnabled:true,bevelThickness:.0005,bevelSize:.0005,bevelSegments:2,curveSegments:12});
+    var bg=new THREE.ExtrudeGeometry(bs,{depth:.0004,bevelEnabled:false,curveSegments:16});
+    hg.translate(-.085,0,0); bg.translate(-.085,0,.0009);
+    var h=new THREE.Mesh(hg,new THREE.MeshStandardMaterial({color:col(0xb9c0c5),metalness:1,roughness:.3}));
+    var b=new THREE.Mesh(bg,new THREE.MeshStandardMaterial({color:col(0xe4e9ec),metalness:1,roughness:.12}));
+    var inner=new THREE.Group(); inner.add(h,b); inner.rotation.x=-Math.PI/2; inner.position.y=.0005;
+    var g=new THREE.Group(); g.add(inner);
+    register('scalpel',g,{w:.17,d:.01},false);
+  }
+  function buildRuler(){
+    var white=new THREE.MeshStandardMaterial({color:col(0xe8e7e1),roughness:.5});
+    var hm=new THREE.MeshStandardMaterial({map:tex(rulerCanvas(true)),roughness:.5}), vm=new THREE.MeshStandardMaterial({map:tex(rulerCanvas(false)),roughness:.5});
+    var a=new THREE.Mesh(new THREE.BoxGeometry(.15,.0012,.022),[white,white,hm,white,white,white]); a.position.set(.075-.075,.0006,.011-.061);
+    var b=new THREE.Mesh(new THREE.BoxGeometry(.022,.0012,.10),[white,white,vm,white,white,white]); b.position.set(.011-.075,.0006,.072-.061);
+    var g=new THREE.Group(); g.add(a,b);
+    register('ruler',g,{w:.15,d:.12},false);
+  }
+  function buildDrops(){
+    var m=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.04,metalness:0,clearcoat:1,clearcoatRoughness:.05,transparent:true,opacity:.3});
+    var pts=[[-.46,-.2,.004],[-.44,-.17,.0025],[.45,.04,.0035],[.43,.07,.002],[.12,.32,.003],[-.13,-.31,.0028],[.16,-.27,.0022],[-.2,.37,.0032],[.24,.42,.0026]];
+    pts.forEach(function(p){ var d=new THREE.Mesh(new THREE.SphereGeometry(p[2],16,10),m); d.scale.y=.32; d.position.set(p[0],p[2]*.3,p[1]); scene.add(d); });
+  }
+
+  /* ---------------- раскладка и камера ---------------- */
+  function layoutFor(a){
+    if(a<.82) return {pitch:64,bounds:{x0:-.235,x1:.235,z0:-.36,z1:.42},
+      atlas:[-.07,-.2,4], tag:[.19,-.3,-12], clips:[.07,.15,-5], id:[-.155,.33,9], scalpel:[.205,-.02,-82], ruler:[-.17,.05,-8]};
+    return {pitch:56,bounds:{x0:-.45,x1:.45,z0:-.24,z1:.29},
+      atlas:[-.29,0,-5], clips:[.27,-.06,4], id:[0,.15,10], tag:[.3,.19,-16], scalpel:[-.03,-.13,-62], ruler:[.07,-.03,-12]};
+  }
+  function applyLayout(init){
+    Object.keys(objs).forEach(function(k){
+      var o=objs[k], p=LAY[k]; if(!p) return;
+      o.base={x:p[0],z:p[1],ry:-p[2]*Math.PI/180};
+      if(k!==active){ o.t.x=o.base.x; o.t.z=o.base.z; o.t.ry=o.base.ry; o.t.y=0; o.t.rx=0; }
+      if(init){ o.c.x=o.t.x; o.c.z=o.t.z; o.c.ry=o.t.ry; o.c.y=0; o.c.rx=0; }
+    });
+  }
+  var tmpCam=new THREE.PerspectiveCamera();
+  function fit(b,pitch,margin,y){
+    y=y||0;
+    var p=pitch*Math.PI/180, dir=new THREE.Vector3(0,Math.sin(p),Math.cos(p));
+    var tgt=new THREE.Vector3((b.x0+b.x1)/2,y,(b.z0+b.z1)/2);
+    tmpCam.fov=camera.fov; tmpCam.aspect=camera.aspect; tmpCam.near=.01; tmpCam.far=20; tmpCam.updateProjectionMatrix();
+    var cs=[[b.x0,b.z0],[b.x1,b.z0],[b.x0,b.z1],[b.x1,b.z1]], lo=.05, hi=8;
+    for(var i=0;i<34;i++){
+      var mid=(lo+hi)/2;
+      tmpCam.position.copy(tgt).addScaledVector(dir,mid); tmpCam.lookAt(tgt); tmpCam.updateMatrixWorld(true);
+      var ok=cs.every(function(c){ v3.set(c[0],y,c[1]).project(tmpCam); return Math.abs(v3.x)<=margin&&Math.abs(v3.y)<=margin; });
+      if(ok) hi=mid; else lo=mid;
+    }
+    return {pos:tgt.clone().addScaledVector(dir,hi),tgt:tgt};
+  }
+  function aim(f,snap){ camPosT.copy(f.pos); camTgtT.copy(f.tgt); if(snap){ camPos.copy(camPosT); camTgt.copy(camTgtT); } }
+  function overviewCam(snap){ aim(fit(LAY.bounds,LAY.pitch,.95,0),snap); }
+  function objBounds(k,pad){ var o=objs[k], hw=o.size.w/2+pad, hd=o.size.d/2+pad; return {x0:o.t.x-hw,x1:o.t.x+hw,z0:o.t.z-hd,z1:o.t.z+hd}; }
+
+  /* ---------------- свет и тема ---------------- */
+  function applyTheme(){
+    var dark=APP.effectiveTheme&&APP.effectiveTheme()==='dark';
+    theme=dark?{bg:0x050607,spot:4.2,hemi:.05,fill:.06,env:.22,exp:.85,fog:[1.3,3.4]}
+              :{bg:0x353c41,spot:5.5,hemi:.32,fill:.2,env:.5,exp:1,fog:[2.2,6]};
+    var bg=col(theme.bg); scene.background=bg; scene.fog=new THREE.Fog(bg,theme.fog[0],theme.fog[1]);
+    hemi.intensity=theme.hemi; fill.intensity=theme.fill; renderer.toneMappingExposure=theme.exp;
+    scene.traverse(function(o){ if(!o.material) return; [].concat(o.material).forEach(function(m){ if('envMapIntensity' in m) m.envMapIntensity=theme.env; }); });
+  }
+  var fseq=[], fT=0, nextFlick=0;
+  function flickMul(now){
+    if(!nextFlick) nextFlick=now+9000;
+    if(!reduce.matches && now>nextFlick && !fseq.length){
+      fseq=[.35,1,.6,1,.22,.85,1].map(function(v){return {v:v,d:45+Math.random()*70};});
+      fT=now; nextFlick=now+10000+Math.random()*15000;
+    }
+    if(fseq.length){ if(now-fT>fseq[0].d){ fT=now; fseq.shift(); } return fseq.length?fseq[0].v:1; }
+    return 1;
+  }
+
+  /* ---------------- взаимодействие ---------------- */
+  var insp=$('#inspect'), iHint=$('#iHint'), iClose=$('#iClose');
+  function setPointer(e){ var r=renderer.domElement.getBoundingClientRect(); pointer.x=((e.clientX-r.left)/r.width)*2-1; pointer.y=-((e.clientY-r.top)/r.height)*2+1; }
+  function pick(){ raycaster.setFromCamera(pointer,camera); var h=raycaster.intersectObjects(pickables,false); return h.length?h[0].object.userData.key:null; }
+  function setHover(k,x,y){
+    if(k!==hoverKey){
+      if(hoverKey&&objs[hoverKey]&&mode==='overview') objs[hoverKey].liftT=0;
+      hoverKey=k; if(k&&mode==='overview') objs[k].liftT=.012;
+      renderer.domElement.style.cursor=k?'pointer':'default';
+    }
+    if(k&&mode==='overview'){ hl.textContent=LABELS[k]; hl.classList.add('on'); if(x!==undefined) hl.style.transform='translate('+(x+16)+'px,'+(y+18)+'px)'; }
+    else hl.classList.remove('on');
+  }
+  function activate(k){
+    if(mode!=='overview') return;
+    setHover(null); APP.hidePrompt&&APP.hidePrompt();
+    active=k; var o=objs[k];
+    if(k==='atlas'||k==='clips'){
+      mode='focus'; o.liftT=.016;
+      aim(fit(objBounds(k,.03),74,.8,0));
+      setTimeout(function(){
+        if(mode!=='focus'||active!==k) return;
+        APP.open(k,null);
+        setTimeout(function(){ if(mode==='focus') paused=true; },320);
+      },reduce.matches?0:430);
+      return;
+    }
+    mode='inspect'; insp.hidden=false;
+    iHint.textContent=k==='id'?'Нажмите на удостоверение, чтобы открыть или закрыть':'';
+    iClose.focus({preventScroll:true});
+    if(k==='id'){
+      o.t.x=o.base.x+IW/2; o.t.y=.012; o.t.ry=0;
+      aim(fit({x0:o.base.x-IW-.012,x1:o.base.x+IW+.012,z0:o.base.z-ID/2-.012,z1:o.base.z+ID/2+.012},80,.9,.012));
+      setTimeout(function(){ if(active==='id') idAngleT=Math.PI; },reduce.matches?0:380);
+    }else if(k==='tag'){
+      o.t.y=.03; o.t.ry=0; o.t.rx=.12;
+      aim(fit({x0:o.base.x-GW/2-.012,x1:o.base.x+GW/2+.012,z0:o.base.z-GH/2-.012,z1:o.base.z+GH/2+.012},80,.88,.03));
+    }
+  }
+  function release(){
+    if(mode==='overview') return;
+    paused=false; mode='overview'; idAngleT=0; insp.hidden=true; active=null;
+    Object.keys(objs).forEach(function(k){ var o=objs[k]; o.t.x=o.base.x; o.t.z=o.base.z; o.t.y=0; o.t.ry=o.base.ry; o.t.rx=0; o.liftT=0; });
+    overviewCam(false);
+  }
+  APP.onClose=function(){ if(mode==='focus') release(); };
+  APP.onTheme=function(){ if(scene) applyTheme(); };
+  function onTap(k){
+    if(mode==='overview'){ if(k) activate(k); }
+    else if(mode==='inspect'){
+      if(k===active){ if(k==='id') idAngleT=idAngleT>0?0:Math.PI; }
+      else release();
+    }
+  }
+  function bindEvents(){
+    var el=renderer.domElement, down=null;
+    el.addEventListener('pointermove',function(e){
+      setPointer(e);
+      if(mode==='overview'){ par.tx=pointer.x; par.ty=pointer.y; }
+      if(e.pointerType==='mouse'){ if(mode==='overview') setHover(pick(),e.clientX,e.clientY); else { var k=pick(); el.style.cursor=(mode==='inspect'&&k==='id'&&active==='id')?'pointer':'default'; } }
+    });
+    el.addEventListener('pointerleave',function(){ setHover(null); par.tx=par.ty=0; });
+    el.addEventListener('pointerdown',function(e){ down={x:e.clientX,y:e.clientY}; });
+    el.addEventListener('pointerup',function(e){
+      if(!down) return; var moved=Math.hypot(e.clientX-down.x,e.clientY-down.y); down=null;
+      if(moved>8) return; setPointer(e); onTap(pick());
+    });
+    iClose.addEventListener('click',release);
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&mode==='inspect') release(); });
+    $$('#srObjs button').forEach(function(b){
+      var k=b.getAttribute('data-key');
+      b.addEventListener('focus',function(){
+        if(mode!=='overview') return;
+        setHover(k); var o=objs[k]; v3.set(o.c.x,.02,o.c.z).project(camera);
+        hl.textContent=LABELS[k]; hl.classList.add('on');
+        hl.style.transform='translate('+((v3.x+1)/2*innerWidth)+'px,'+((1-v3.y)/2*innerHeight)+'px)';
+      });
+      b.addEventListener('blur',function(){ setHover(null); });
+      b.addEventListener('click',function(){ if(mode==='overview') activate(k); else if(mode==='inspect'&&active==='id'&&k==='id') idAngleT=idAngleT>0?0:Math.PI; });
+    });
+    var rt=null;
+    window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(onResize,120); });
+  }
+  function onResize(){
+    var w=innerWidth,h=innerHeight;
+    renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+    LAY=layoutFor(w/h);
+    if(mode==='inspect') release();
+    applyLayout(false);
+    if(mode==='overview') overviewCam(false);
+    else if(mode==='focus'&&active) aim(fit(objBounds(active,.03),74,.8,0),true);
+    paused=false; renderer.render(scene,camera); if(mode==='focus') paused=true;
+  }
+
+  /* ---------------- цикл ---------------- */
+  var last=0;
+  function loop(t){
+    requestAnimationFrame(loop);
+    var dt=last?Math.min(.05,(t-last)/1000):.016; last=t;
+    if(paused) return;
+    var k=reduce.matches?1:1-Math.exp(-dt*6), k2=reduce.matches?1:1-Math.exp(-dt*9), k3=reduce.matches?1:1-Math.exp(-dt*5);
+    camPos.lerp(camPosT,k); camTgt.lerp(camTgtT,k);
+    par.x+=(par.tx-par.x)*k; par.y+=(par.ty-par.y)*k;
+    Object.keys(objs).forEach(function(key){
+      var o=objs[key];
+      ['x','y','z','ry','rx'].forEach(function(p){ o.c[p]+=(o.t[p]-o.c[p])*k2; });
+      o.lift+=(o.liftT-o.lift)*k2;
+      o.g.position.set(o.c.x,o.c.y+o.lift,o.c.z); o.g.rotation.set(o.c.rx,o.c.ry,0);
+    });
+    if(idCover){ idAngle+=(idAngleT-idAngle)*k3; idCover.rotation.z=idAngle; }
+    spot.intensity=theme.spot*flickMul(t);
+    camera.position.copy(camPos);
+    if(mode==='overview'&&!reduce.matches){ camera.position.x+=par.x*.025; camera.position.z-=par.y*.018; }
+    camera.lookAt(camTgt);
+    renderer.render(scene,camera);
+  }
+
+  /* ---------------- сборка ---------------- */
+  function build(img){
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    renderer.setSize(innerWidth,innerHeight);
+    renderer.outputEncoding=THREE.sRGBEncoding;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.physicallyCorrectLights=true;
+    renderer.shadowMap.enabled=true;
+    renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    host.appendChild(renderer.domElement);
+    maxAniso=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+    scene=new THREE.Scene();
+    camera=new THREE.PerspectiveCamera(30,innerWidth/innerHeight,.02,12);
+    buildEnv(); buildRoom(); buildTable(); buildLights();
+    buildAtlas(img); buildClips(); buildID(img); buildTag(); buildScalpel(); buildRuler(); buildDrops();
+    applyTheme();
+    LAY=layoutFor(innerWidth/innerHeight); applyLayout(true); overviewCam(true);
+    bindEvents();
+    renderer.render(scene,camera);
+    requestAnimationFrame(loop);
+    setTimeout(function(){ APP.lampOn(); },80);
+  }
+  Promise.all([APP.fontsReady(),APP.photoReady()]).then(function(res){
+    try{ build(res[1]); }
+    catch(err){
+      if(window.console) console.error(err);
+      document.body.classList.remove('has3d');
+      if(renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
+      fallback();
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
